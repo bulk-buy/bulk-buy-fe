@@ -1,0 +1,7 @@
+{
+    "editor.formatOnSave": true,
+    "sonarlint.connectedMode.project": {
+        "connectionId": "vscode-bulk-buy",
+        "projectKey": "bulk-buy_bulk-buy-fe"
+    }
+}
