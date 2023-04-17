@@ -1,11 +1,12 @@
-import LeftNavigation from "components/navigation/LeftNavigation";
-import { BrowserRouter } from "react-router-dom";
+import LeftNavigation from "components/sidebar/LeftNavigation";
+import { BrowserRouter, RouterProvider } from "react-router-dom";
+import { router } from "routes/routes";
 
 function App() {
   return (
-    <BrowserRouter>
+    <RouterProvider router={router}>
       <LeftNavigation />
-    </BrowserRouter>
+    </RouterProvider>
   );
 }
 
