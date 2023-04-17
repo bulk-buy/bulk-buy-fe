@@ -1,9 +1,8 @@
-import { Paper } from '@mui/material';
+import { RouterProvider } from "react-router-dom";
+import { router } from "routes/routes";
 
 function App() {
-  return (
-    <Paper elevation={0}>landing page</Paper>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
