@@ -1,11 +1,11 @@
-import { RouterProvider } from "react-router-dom";
-import { router } from "routes/routes";
+import LeftNavigation from "components/navigation/LeftNavigation";
+import { BrowserRouter } from "react-router-dom";
 
 function App() {
   return (
-    <>
-      <RouterProvider router={router} />
-    </>
+    <BrowserRouter>
+      <LeftNavigation />
+    </BrowserRouter>
   );
 }
 
