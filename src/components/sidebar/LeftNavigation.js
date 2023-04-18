@@ -97,9 +97,6 @@ export default function LeftNavigation() {
           >
             <Menu />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            Persistent drawer
-          </Typography>
         </Toolbar>
       </CustomAppBar>
       <Drawer
