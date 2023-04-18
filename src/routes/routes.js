@@ -1,19 +1,26 @@
 import LeftNavigation from "components/sidebar/LeftNavigation";
 import Error401 from "pages/Error401";
 import Error404 from "pages/Error404";
+import Home from "pages/Home";
 import { createBrowserRouter } from "react-router-dom";
 
 export const router = createBrowserRouter([
   {
-    path: "/",
+    path: "",
     element: <LeftNavigation />,
-  },
-  {
-    path: "/401",
-    element: <Error401 />,
-  },
-  {
-    path: "/404",
-    element: <Error404 />,
+    children: [
+      {
+        path: "/",
+        element: <Home />,
+      },
+      {
+        path: "/401",
+        element: <Error401 />,
+      },
+      {
+        path: "/404",
+        element: <Error404 />,
+      },
+    ],
   },
 ]);

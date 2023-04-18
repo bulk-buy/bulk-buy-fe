@@ -17,8 +17,7 @@ import {
 import { styled, useTheme } from "@mui/material/styles";
 import { NavigationList } from "constants/LeftNavigationConsts";
 import * as React from "react";
-import { useNavigate, useNavigation } from "react-router-dom";
-import { router } from "routes/routes";
+import { Outlet, useNavigate } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -138,6 +137,7 @@ export default function LeftNavigation() {
       </Drawer>
       <Main open={open}>
         <DrawerHeader />
+        <Outlet />
       </Main>
     </Box>
   );
