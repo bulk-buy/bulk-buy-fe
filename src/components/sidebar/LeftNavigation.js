@@ -12,7 +12,6 @@ import {
   ListItemIcon,
   ListItemText,
   Toolbar,
-  Typography,
 } from "@mui/material";
 import { styled, useTheme } from "@mui/material/styles";
 import { NavigationList } from "constants/LeftNavigationConsts";
