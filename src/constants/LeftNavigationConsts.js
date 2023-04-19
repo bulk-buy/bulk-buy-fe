@@ -1,4 +1,4 @@
-import { Home, List, Logout, Person, ShoppingCart } from "@mui/icons-material";
+import { Home, List, Person, ShoppingCart } from "@mui/icons-material";
 
 export const NavigationList = [
   {
@@ -24,11 +24,5 @@ export const NavigationList = [
     icon: <ShoppingCart />,
     routeTo: "/my-orders",
     color: "primary",
-  },
-  {
-    title: "Logout",
-    icon: <Logout />,
-    routeTo: "/logout",
-    color: "error",
   },
 ];

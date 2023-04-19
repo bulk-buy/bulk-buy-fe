@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight, Menu } from "@mui/icons-material";
+import { ChevronLeft, ChevronRight, Logout, Menu } from "@mui/icons-material";
 import {
   AppBar,
   Box,
@@ -65,7 +65,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   justifyContent: "flex-end",
 }));
 
-export default function LeftNavigation() {
+export default function LeftNavigation({ onSignOut, currentUser }) {
   const navigate = useNavigate();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -81,6 +81,8 @@ export default function LeftNavigation() {
   const handleClickNavigation = (routeTo) => {
     navigate(routeTo);
   };
+
+  console.log(currentUser);
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -129,6 +131,14 @@ export default function LeftNavigation() {
               </ListItemButton>
             </ListItem>
           ))}
+          <ListItem key="signout" disablePadding>
+            <ListItemButton color="error" onClick={onSignOut}>
+              <ListItemIcon color="error">
+                <Logout />
+              </ListItemIcon>
+              <ListItemText primary="Logout" />
+            </ListItemButton>
+          </ListItem>
         </List>
       </Drawer>
       <Main open={open}>
