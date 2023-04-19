@@ -1,4 +1,4 @@
-import { withAuthenticator } from "@aws-amplify/ui-react";
+import { Authenticator, withAuthenticator } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
 import { Amplify } from "aws-amplify";
 import LeftNavigation from "components/sidebar/LeftNavigation";
@@ -8,13 +8,13 @@ import awsExports from "./aws-exports";
 
 Amplify.configure(awsExports);
 
-function App({ signOut, user }) {
-  console.log(user);
-  console.log(signOut);
+function App() {
   return (
-    <RouterProvider router={router}>
-      <LeftNavigation onSignOut={signOut} currentUser={user} />
-    </RouterProvider>
+    <Authenticator>
+      <RouterProvider router={router}>
+        <LeftNavigation />
+      </RouterProvider>
+    </Authenticator>
   );
 }
 
