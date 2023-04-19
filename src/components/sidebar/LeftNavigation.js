@@ -1,4 +1,5 @@
-import { ChevronLeft, ChevronRight, Menu } from "@mui/icons-material";
+import { useAuthenticator, withAuthenticator } from "@aws-amplify/ui-react";
+import { ChevronLeft, ChevronRight, Logout, Menu } from "@mui/icons-material";
 import {
   AppBar,
   Box,
@@ -65,7 +66,8 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   justifyContent: "flex-end",
 }));
 
-export default function LeftNavigation() {
+function LeftNavigation() {
+  const { signOut, user } = useAuthenticator();
   const navigate = useNavigate();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -129,6 +131,14 @@ export default function LeftNavigation() {
               </ListItemButton>
             </ListItem>
           ))}
+          <ListItem key="signout" disablePadding>
+            <ListItemButton color="error" onClick={signOut}>
+              <ListItemIcon color="error">
+                <Logout />
+              </ListItemIcon>
+              <ListItemText primary="Logout" />
+            </ListItemButton>
+          </ListItem>
         </List>
       </Drawer>
       <Main open={open}>
@@ -138,3 +148,5 @@ export default function LeftNavigation() {
     </Box>
   );
 }
+
+export default withAuthenticator(LeftNavigation);

@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-bulkbuyfe-dev-94115-authRole",
+      "UnauthRoleArn": "arn:aws:iam::695137441790:role/amplify-bulkbuyfe-dev-94115-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::695137441790:role/amplify-bulkbuyfe-dev-94115-authRole",
+      "Region": "ap-southeast-1",
+      "DeploymentBucketName": "amplify-bulkbuyfe-dev-94115-deployment",
+      "UnauthRoleName": "amplify-bulkbuyfe-dev-94115-unauthRole",
+      "StackName": "amplify-bulkbuyfe-dev-94115",
+      "StackId": "arn:aws:cloudformation:ap-southeast-1:695137441790:stack/amplify-bulkbuyfe-dev-94115/4674b960-de53-11ed-957a-0a6dc331856c",
+      "AmplifyAppId": "d3cj9tqjeu9li6"
+    },
+    "categories": {
+      "auth": {
+        "bulkbuyfe7544ff18": {}
+      }
+    }
+  }
+}
