@@ -1,4 +1,4 @@
-import { Home, List, Person, ShoppingCart } from "@mui/icons-material";
+import { Home, List, ShoppingCart } from "@mui/icons-material";
 
 export const NavigationList = [
   {

@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  name: "",
+  user: {},
 };
 
 export const userInfoSlice = createSlice({
@@ -9,12 +9,16 @@ export const userInfoSlice = createSlice({
   initialState,
   reducers: {
     setUserInfo: (state, action) => {
-      state.name = action.payload;
+      state = action.payload;
+    },
+    getUserInfo: (state) => {
+      return state;
     },
   },
 });
 
 // Action creators are generated for each case reducer function
 export const { setUserInfo } = userInfoSlice.actions;
+export const { getUserInfo } = userInfoSlice.actions;
 
 export default userInfoSlice.reducer;
