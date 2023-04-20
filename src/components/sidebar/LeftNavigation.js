@@ -68,9 +68,10 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 }));
 
 function LeftNavigation() {
-  const { signOut, user } = useAuthenticator();
+  const { signOut } = useAuthenticator();
   const navigate = useNavigate();
   const theme = useTheme();
+
   const [open, setOpen] = React.useState(true);
 
   const handleDrawerOpen = () => {
@@ -105,7 +106,7 @@ function LeftNavigation() {
             height={50}
             style={{ margin: "auto" }}
           />
-          <IconButton>
+          <IconButton onClick={() => handleClickNavigation("/profile")}>
             <Avatar />
           </IconButton>
         </Toolbar>

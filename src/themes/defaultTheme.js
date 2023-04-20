@@ -7,8 +7,17 @@ export const defaultTheme = createTheme({
       contrastText: "#fff",
     },
     secondary: {
-      main: "#efe494",
+      main: "#d5c075",
       contrastText: "#000",
+    },
+  },
+  components: {
+    MuiFormHelperText: {
+      styleOverrides: {
+        root: {
+          color: "red",
+        },
+      },
     },
   },
 });
