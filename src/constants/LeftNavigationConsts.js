@@ -8,12 +8,6 @@ export const NavigationList = [
     color: "primary",
   },
   {
-    title: "My Profile",
-    icon: <Person />,
-    routeTo: "/profile",
-    color: "primary",
-  },
-  {
     title: "My Listings",
     icon: <List />,
     routeTo: "/my-listings",

@@ -2,6 +2,7 @@ import { useAuthenticator, withAuthenticator } from "@aws-amplify/ui-react";
 import { ChevronLeft, ChevronRight, Logout, Menu } from "@mui/icons-material";
 import {
   AppBar,
+  Avatar,
   Box,
   CssBaseline,
   Divider,
@@ -70,7 +71,7 @@ function LeftNavigation() {
   const { signOut, user } = useAuthenticator();
   const navigate = useNavigate();
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -88,7 +89,7 @@ function LeftNavigation() {
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <CustomAppBar position="fixed" open={open}>
-        <Toolbar>
+        <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -97,6 +98,15 @@ function LeftNavigation() {
             sx={{ mr: 2, ...(open && { display: "none" }) }}
           >
             <Menu />
+          </IconButton>
+          <img
+            alt="BulkBuy logo"
+            src="/images/logo.png"
+            height={50}
+            style={{ margin: "auto" }}
+          />
+          <IconButton>
+            <Avatar />
           </IconButton>
         </Toolbar>
       </CustomAppBar>
@@ -119,7 +129,13 @@ function LeftNavigation() {
           </IconButton>
         </DrawerHeader>
         <Divider />
-        <List>
+        <List
+          sx={{
+            flexGrow: 1,
+            flexDirection: "column",
+            display: "flex",
+          }}
+        >
           {NavigationList.map((link) => (
             <ListItem key={link.routeTo} disablePadding>
               <ListItemButton
@@ -131,7 +147,7 @@ function LeftNavigation() {
               </ListItemButton>
             </ListItem>
           ))}
-          <ListItem key="signout" disablePadding>
+          <ListItem key="signout" disablePadding sx={{ marginTop: "auto" }}>
             <ListItemButton color="error" onClick={signOut}>
               <ListItemIcon color="error">
                 <Logout />
