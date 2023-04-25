@@ -11,7 +11,7 @@ const profileValidation = Yup.object().shape({
   lastName: Yup.string().required("Last name is required"),
   phone: Yup.string()
     .required("Phone number is required")
-    .matches(/^[0-9]{8}$/, "Phone number must be 8 digits"),
+    .matches(/\+65(6|8|9)\d{7}/g, `Incorrect phone number format`),
   streetName: Yup.string()
     .required("Street name is required")
     .matches(/^\S*$/, "Whitespace is not allowed"),
