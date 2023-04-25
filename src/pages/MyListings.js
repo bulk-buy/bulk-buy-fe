@@ -13,16 +13,12 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import {
-  DatePicker,
-  DesktopDatePicker,
-  LocalizationProvider,
-} from "@mui/x-date-pickers";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useFormik } from "formik";
+import moment from "moment";
 import { useState } from "react";
 import * as Yup from "yup";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import moment from "moment";
 
 function MyListings() {
   const [activeListings, setActiveListings] = useState([]);
