@@ -1,16 +1,10 @@
-import { Home, List, Person, ShoppingCart } from "@mui/icons-material";
+import { Home, List, ShoppingCart } from "@mui/icons-material";
 
 export const NavigationList = [
   {
     title: "Home",
     icon: <Home />,
     routeTo: "/",
-    color: "primary",
-  },
-  {
-    title: "My Profile",
-    icon: <Person />,
-    routeTo: "/profile",
     color: "primary",
   },
   {

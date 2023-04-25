@@ -1,4 +1,4 @@
-import { Authenticator, withAuthenticator } from "@aws-amplify/ui-react";
+import { Authenticator, Image, withAuthenticator } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
 import { Amplify } from "aws-amplify";
 import LeftNavigation from "components/sidebar/LeftNavigation";
@@ -7,6 +7,12 @@ import { router } from "routes/routes";
 import awsExports from "./aws-exports";
 
 Amplify.configure(awsExports);
+
+const components = {
+  Header() {
+    return <Image alt="BulkBuy logo" src="/images/logo.png" />;
+  },
+};
 
 function App() {
   return (
@@ -18,4 +24,4 @@ function App() {
   );
 }
 
-export default withAuthenticator(App);
+export default withAuthenticator(App, { components: components });
