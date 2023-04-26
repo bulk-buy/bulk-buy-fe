@@ -1,4 +1,4 @@
-import LeftNavigation from "components/sidebar/LeftNavigation";
+import LeftNavigation from "components/LeftNavigation";
 import Error401 from "pages/Error401";
 import Error404 from "pages/Error404";
 import Home from "pages/Home";
