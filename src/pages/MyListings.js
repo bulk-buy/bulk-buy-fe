@@ -1,19 +1,70 @@
 import { Add } from "@mui/icons-material";
-import { Button, Divider, Grid, Paper, Typography } from "@mui/material";
+import {
+  Button,
+  Card,
+  CardActionArea,
+  CardContent,
+  CardMedia,
+  Divider,
+  Grid,
+  Paper,
+  Typography,
+} from "@mui/material";
+import {
+  fetchMyActiveListings,
+  fetchMyCompletedListings,
+  fetchMyUpcomingListings,
+} from "apis/endpoints/ListingEndpoints";
 import CreateNewListingDialog from "components/CreateNewListingDialog";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function MyListings() {
-  const [activeListings, setActiveListings] = useState([]);
-  const [inactiveListings, setInactiveListings] = useState([]);
-  const [completedListings, setCompletedListings] = useState([]);
+  const [myActiveListings, setMyActiveListings] = useState([]);
+  const [myUpcomingListings, setMyUpcomingListings] = useState([]);
+  const [myCompletedListings, setMyCompletedListings] = useState([]);
   const [openNewListingDialog, setOpenNewListingDialog] = useState(false);
 
-  //   useEffect(() => {
-  //     fetchActiveListings();
-  //     fetchInactiveListings();
-  //     fetchCompletedListings();
-  // }, []);
+  useEffect(() => {
+    fetchMyActiveListings().then((response) => {
+      setMyActiveListings(response);
+    });
+    fetchMyUpcomingListings().then((response) => {
+      setMyUpcomingListings(response);
+    });
+    fetchMyCompletedListings().then((response) => {
+      setMyCompletedListings(response);
+    });
+  }, []);
+
+  const renderCards = (listings) => {
+    return listings.map((listing) => (
+      <Grid item xs={12} sm={6} md={4} lg={3} key={listing.id}>
+        <Card
+          sx={{ maxWidth: 345 }}
+          onClick={() => {
+            console.log(listing.id);
+          }}
+        >
+          <CardActionArea>
+            <CardMedia
+              component="img"
+              height="140"
+              src="/images/trolley512.png"
+              alt={listing.category.name}
+            />
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="div">
+                {listing.title}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                {listing.description}
+              </Typography>
+            </CardContent>
+          </CardActionArea>
+        </Card>
+      </Grid>
+    ));
+  };
 
   const renderActiveListings = () => (
     <Grid container spacing={2}>
@@ -21,8 +72,10 @@ function MyListings() {
         <Typography variant="h4">Active </Typography>
       </Grid>
       <Grid item xs={12}>
-        {activeListings.length ? (
-          <Grid></Grid>
+        {myActiveListings.length ? (
+          <Grid container spacing={2}>
+            {renderCards(myActiveListings)}
+          </Grid>
         ) : (
           <Typography variant="subtitle1">No active listings</Typography>
         )}
@@ -30,16 +83,18 @@ function MyListings() {
     </Grid>
   );
 
-  const renderInactiveListings = () => (
+  const renderUpcomingListings = () => (
     <Grid container spacing={2}>
       <Grid item xs={12}>
-        <Typography variant="h4">Inactive </Typography>
+        <Typography variant="h4">Upcoming </Typography>
       </Grid>
       <Grid item xs={12}>
-        {inactiveListings.length ? (
-          <Grid></Grid>
+        {myUpcomingListings.length ? (
+          <Grid container spacing={2}>
+            {renderCards(myUpcomingListings)}
+          </Grid>
         ) : (
-          <Typography variant="subtitle1">No inactive listings</Typography>
+          <Typography variant="subtitle1">No upcoming listings</Typography>
         )}
       </Grid>
     </Grid>
@@ -51,8 +106,10 @@ function MyListings() {
         <Typography variant="h4">Completed </Typography>
       </Grid>
       <Grid item xs={12}>
-        {completedListings.length ? (
-          <Grid></Grid>
+        {myCompletedListings.length ? (
+          <Grid container spacing={2}>
+            {renderCards(myCompletedListings)}
+          </Grid>
         ) : (
           <Typography variant="subtitle1">No completed listings</Typography>
         )}
@@ -80,7 +137,7 @@ function MyListings() {
         <Grid item xs={12}>
           <Divider />
         </Grid>
-        {renderInactiveListings()}
+        {renderUpcomingListings()}
         <Grid item xs={12}>
           <Divider />
         </Grid>

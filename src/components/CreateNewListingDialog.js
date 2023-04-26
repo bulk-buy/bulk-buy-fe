@@ -9,9 +9,11 @@ import {
   Grid,
   IconButton,
   InputAdornment,
+  MenuItem,
   TextField,
   Typography,
 } from "@mui/material";
+import { CategoriesTesting } from "constants/CategoriesTesting";
 import { useFormik } from "formik";
 import moment from "moment";
 import * as Yup from "yup";
@@ -23,7 +25,7 @@ function CreateNewListingDialog({
   const newListingValidation = Yup.object().shape({
     title: Yup.string().required("Title is required"),
     description: Yup.string().required("Description is required"),
-    // category: Yup.string().required("Category is required"),
+    category: Yup.string().required("Category is required"),
     items: Yup.array().of(
       Yup.object().shape({
         title: Yup.string().required("Title is required"),
@@ -39,7 +41,7 @@ function CreateNewListingDialog({
     initialValues: {
       title: "",
       description: "",
-      //   category: "",
+      category: "",
       startDate: moment(new Date()).format("YYYY-MM-DD"),
       endDate: moment(new Date()).format("YYYY-MM-DD"),
       items: [
@@ -98,22 +100,29 @@ function CreateNewListingDialog({
                 }
               />
             </Grid>
-            {/* <Grid item xs={12}>
-                <TextField
-                    fullWidth
-                    required
-                    label="Category"
-                    name="category"
-                    value={newListingForm.values.category}
-                    onChange={newListingForm.handleChange}
-                    helperText={
-                    newListingForm.errors.category &&
-                        newListingForm.touched.category
-                        ? newListingForm.errors.category
-                        : null
-                    }
-                />
-                </Grid> */}
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                required
+                select
+                label="Category"
+                name="category"
+                value={newListingForm.values.category}
+                onChange={newListingForm.handleChange}
+                helperText={
+                  newListingForm.errors.category &&
+                  newListingForm.touched.category
+                    ? newListingForm.errors.category
+                    : null
+                }
+              >
+                {CategoriesTesting.map((category) => (
+                  <MenuItem key={category.id} value={category.id}>
+                    {category.name}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Grid>
             <Grid item xs={6}>
               <TextField
                 label="Start Date"
