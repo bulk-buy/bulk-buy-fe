@@ -26,6 +26,14 @@ export const defaultTheme = createTheme({
         },
       },
     },
+    MuiAccordionSummary: {
+      styleOverrides: {
+        root: {
+          padding: 0,
+          borderBottom: "1px solid #717171de",
+        },
+      },
+    },
   },
   typography: {
     fontFamily: "sans-serif",
