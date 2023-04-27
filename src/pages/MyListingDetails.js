@@ -85,7 +85,7 @@ function MyListingDetails() {
                     {myListingDetails.orders?.map((order) => (
                       <Grid item xs={12} key={order.id}>
                         <Typography variant="h5" gutterBottom component="div">
-                          {order.user.name}
+                          {`${order.user.firstName} ${order.user.lastName}`}
                         </Typography>
                         {order.items.map((item) => (
                           <Typography

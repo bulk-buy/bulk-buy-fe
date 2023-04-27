@@ -1,7 +1,8 @@
 import LeftNavigation from "components/LeftNavigation";
 import Error401 from "pages/Error401";
 import Error404 from "pages/Error404";
-import Home from "pages/Home";
+import ListingDetails from "pages/ListingDetails";
+import Listings from "pages/Listings";
 import MyListingDetails from "pages/MyListingDetails";
 import MyListings from "pages/MyListings";
 import MyOrders from "pages/MyOrders";
@@ -15,7 +16,15 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Home />,
+        element: <Listings />,
+      },
+      {
+        path: "/listings",
+        element: <Listings />,
+      },
+      {
+        path: "/listings/:listingId",
+        element: <ListingDetails />,
       },
       {
         path: "/profile",

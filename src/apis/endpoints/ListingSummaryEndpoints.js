@@ -9,10 +9,11 @@ export const fetchListingSummary = (listingId) => {
     //   .catch((error) => {
     //     console.error(error);
     //     reject(error);
-    //   });
+    // //   });
     let listingSummary = ListingsTesting.find(
-      (listing) => listing.id === listingId
+      (listing) => listing.id.toString() === listingId.toString()
     );
+
     resolve({
       id: listingId,
       title: listingSummary.title,

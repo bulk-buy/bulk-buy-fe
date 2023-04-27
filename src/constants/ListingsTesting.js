@@ -31,7 +31,8 @@ export const ListingsTesting = [
         id: 1,
         user: {
           id: 1,
-          name: "User 1",
+          firstName: "User",
+          lastName: "1",
         },
         items: [
           {
@@ -48,7 +49,8 @@ export const ListingsTesting = [
         id: 2,
         user: {
           id: 2,
-          name: "User 2",
+          firstName: "User",
+          lastName: "2",
         },
         items: [
           {
@@ -89,7 +91,8 @@ export const ListingsTesting = [
         id: 1,
         user: {
           id: 1,
-          name: "User 1",
+          firstName: "User",
+          lastName: "1",
         },
         items: [
           {
@@ -102,7 +105,8 @@ export const ListingsTesting = [
         id: 2,
         user: {
           id: 2,
-          name: "User 2",
+          firstName: "User",
+          lastName: "2",
         },
         items: [
           {
@@ -170,7 +174,8 @@ export const ListingsTesting = [
         id: 1,
         user: {
           id: 1,
-          name: "User 1",
+          firstName: "User",
+          lastName: "1",
         },
         items: [
           {

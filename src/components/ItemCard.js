@@ -9,11 +9,11 @@ import { fetchCategory } from "apis/endpoints/CategoriesEndpoints";
 import { fetchListingSummary } from "apis/endpoints/ListingSummaryEndpoints";
 import { useEffect, useState } from "react";
 
-function ItemCard({ itemId, onClick }) {
+function ItemCard({ listingId, onClick }) {
   const [itemSummary, setItemSummary] = useState({});
 
   useEffect(() => {
-    fetchListingSummary(itemId).then((response) => {
+    fetchListingSummary(listingId).then((response) => {
       setItemSummary(response);
       fetchCategory(response.category.id).then((response) => {
         setItemSummary((prevState) => ({
@@ -22,7 +22,7 @@ function ItemCard({ itemId, onClick }) {
         }));
       });
     });
-  }, [itemId]);
+  }, [listingId]);
 
   return (
     <Card sx={{ maxWidth: 345 }} onClick={onClick}>

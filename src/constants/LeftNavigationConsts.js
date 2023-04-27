@@ -4,7 +4,7 @@ export const NavigationList = [
   {
     title: "Home",
     icon: <Home />,
-    routeTo: "/",
+    routeTo: "/listings",
     color: "primary",
   },
   {
