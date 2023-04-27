@@ -4,7 +4,6 @@ import {
   AccordionDetails,
   AccordionSummary,
   Box,
-  Divider,
   Grid,
   Paper,
   Typography,
