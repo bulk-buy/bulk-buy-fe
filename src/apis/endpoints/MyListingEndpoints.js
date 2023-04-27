@@ -45,3 +45,24 @@ export const fetchMyCompletedListings = () => {
     resolve(MyCompletedListingsTesting);
   });
 };
+
+export const fetchMyListingDetails = (listingId) => {
+  return new Promise((resolve, reject) => {
+    // BulkBuyMS.get(`/my-listings/${listingId}`)
+    //   .then((response) => {
+    //     resolve(response.data);
+    //   })
+    //   .catch((error) => {
+    //     console.error(error);
+    //     reject(error);
+    //   });
+    let listings = [
+      ...MyActiveListingsTesting,
+      ...MyUpcomingListingsTesting,
+      ...MyCompletedListingsTesting,
+    ];
+    let listing = listings.find((listing) => listing.id === +listingId);
+
+    resolve(listing);
+  });
+};

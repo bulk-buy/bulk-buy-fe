@@ -14,11 +14,14 @@ import {
   fetchMyActiveListings,
   fetchMyCompletedListings,
   fetchMyUpcomingListings,
-} from "apis/endpoints/ListingEndpoints";
+} from "apis/endpoints/MyListingEndpoints";
 import CreateNewListingDialog from "components/CreateNewListingDialog";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 
 function MyListings() {
+  const navigate = useNavigate();
+
   const [myActiveListings, setMyActiveListings] = useState([]);
   const [myUpcomingListings, setMyUpcomingListings] = useState([]);
   const [myCompletedListings, setMyCompletedListings] = useState([]);
@@ -42,7 +45,7 @@ function MyListings() {
         <Card
           sx={{ maxWidth: 345 }}
           onClick={() => {
-            console.log(listing.id);
+            navigate(`/my-listings/${listing.id}`);
           }}
         >
           <CardActionArea>

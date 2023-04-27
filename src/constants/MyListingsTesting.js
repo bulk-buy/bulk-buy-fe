@@ -36,9 +36,11 @@ export const MyActiveListingsTesting = [
         items: [
           {
             id: 1,
-            title: "Listing 1 Item 1",
-            description: "Listing 1 Item 1 Description",
-            price: 100,
+            quantity: 1,
+          },
+          {
+            id: 2,
+            quantity: 2,
           },
         ],
       },
@@ -51,9 +53,7 @@ export const MyActiveListingsTesting = [
         items: [
           {
             id: 2,
-            title: "Listing 1 Item 2",
-            description: "Listing 1 Item 2 Description",
-            price: 200,
+            quantity: 1,
           },
         ],
       },
@@ -94,9 +94,7 @@ export const MyActiveListingsTesting = [
         items: [
           {
             id: 1,
-            title: "Listing 1 Item 1",
-            description: "Listing 1 Item 1 Description",
-            price: 100,
+            quantity: 1,
           },
         ],
       },
@@ -109,9 +107,7 @@ export const MyActiveListingsTesting = [
         items: [
           {
             id: 2,
-            title: "Listing 1 Item 2",
-            description: "Listing 1 Item 2 Description",
-            price: 200,
+            quantity: 1,
           },
         ],
       },
@@ -184,9 +180,7 @@ export const MyCompletedListingsTesting = [
         items: [
           {
             id: 1,
-            title: "Listing 3 Item 1",
-            description: "Listing 3 Item 1 Description",
-            price: 100,
+            quantity: 1,
           },
         ],
       },
