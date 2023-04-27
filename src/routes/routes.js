@@ -4,6 +4,7 @@ import Error404 from "pages/Error404";
 import Home from "pages/Home";
 import MyListingDetails from "pages/MyListingDetails";
 import MyListings from "pages/MyListings";
+import MyOrders from "pages/MyOrders";
 import Profile from "pages/Profile";
 import { createBrowserRouter } from "react-router-dom";
 
@@ -27,6 +28,10 @@ export const router = createBrowserRouter([
       {
         path: "my-listings/:listingId",
         element: <MyListingDetails />,
+      },
+      {
+        path: "my-orders",
+        element: <MyOrders />,
       },
       /* Error Pages */
       {
