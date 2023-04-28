@@ -12,6 +12,13 @@ export const defaultTheme = createTheme({
     },
   },
   components: {
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "#d5c075",
+        },
+      },
+    },
     MuiFormHelperText: {
       styleOverrides: {
         root: {

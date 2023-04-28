@@ -1,13 +1,17 @@
 import { Grid, Paper, Typography } from "@mui/material";
-import { fetchListings } from "apis/endpoints/ListingEndpoints";
+import { getListings } from "apis/endpoints/ListingEndpoints";
 import ItemCard from "components/ItemCard";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 
-function Home() {
+function Listings() {
+  const navigate = useNavigate();
   const [listings, setListings] = useState([]);
 
+  useEffect(() => {}, [listings]);
+
   useEffect(() => {
-    fetchListings().then((response) => {
+    getListings().then((response) => {
       setListings(response);
     });
   }, []);
@@ -21,9 +25,14 @@ function Home() {
         <Grid item xs={12}>
           {listings.length ? (
             <Grid container spacing={2}>
-              {listings.map((listing) => (
+              {listings?.map((listing) => (
                 <Grid item xs={12} sm={6} md={4} lg={3} key={listing.id}>
-                  <ItemCard itemId={listing.id} />
+                  <ItemCard
+                    listingId={listing.id}
+                    onClick={() => {
+                      navigate(`/listings/${listing.id}`);
+                    }}
+                  />
                 </Grid>
               ))}
             </Grid>
@@ -36,4 +45,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default Listings;

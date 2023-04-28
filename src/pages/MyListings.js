@@ -11,11 +11,12 @@ import {
   Typography,
 } from "@mui/material";
 import {
-  fetchMyActiveListings,
-  fetchMyCompletedListings,
-  fetchMyUpcomingListings,
+  getMyActiveListings,
+  getMyCompletedListings,
+  getMyUpcomingListings,
 } from "apis/endpoints/MyListingEndpoints";
 import CreateNewListingDialog from "components/CreateNewListingDialog";
+import ItemCard from "components/ItemCard";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
@@ -27,14 +28,20 @@ function MyListings() {
   const [myCompletedListings, setMyCompletedListings] = useState([]);
   const [openNewListingDialog, setOpenNewListingDialog] = useState(false);
 
+  useEffect(() => {}, [
+    myActiveListings,
+    myUpcomingListings,
+    myCompletedListings,
+  ]);
+
   useEffect(() => {
-    fetchMyActiveListings().then((response) => {
+    getMyActiveListings().then((response) => {
       setMyActiveListings(response);
     });
-    fetchMyUpcomingListings().then((response) => {
+    getMyUpcomingListings().then((response) => {
       setMyUpcomingListings(response);
     });
-    fetchMyCompletedListings().then((response) => {
+    getMyCompletedListings().then((response) => {
       setMyCompletedListings(response);
     });
   }, []);
@@ -42,29 +49,12 @@ function MyListings() {
   const renderCards = (listings) => {
     return listings.map((listing) => (
       <Grid item xs={12} sm={6} md={4} lg={3} key={listing.id}>
-        <Card
-          sx={{ maxWidth: 345 }}
+        <ItemCard
+          listingId={listing.id}
           onClick={() => {
             navigate(`/my-listings/${listing.id}`);
           }}
-        >
-          <CardActionArea>
-            <CardMedia
-              component="img"
-              height="140"
-              src="/images/trolley512.png"
-              alt={listing.category.name}
-            />
-            <CardContent>
-              <Typography gutterBottom variant="h5" component="div">
-                {listing.title}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                {listing.description}
-              </Typography>
-            </CardContent>
-          </CardActionArea>
-        </Card>
+        />
       </Grid>
     ));
   };

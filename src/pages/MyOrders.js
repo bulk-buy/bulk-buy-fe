@@ -1,7 +1,7 @@
 import { Grid, Paper, Typography } from "@mui/material";
 import {
-  fetchMyCompletedOrders,
-  fetchMyUpcomingOrders,
+  getMyCompletedOrders,
+  getMyUpcomingOrders,
 } from "apis/endpoints/MyOrdersEndpoints";
 import ItemCard from "components/ItemCard";
 import { useEffect, useState } from "react";
@@ -10,11 +10,13 @@ function MyOrders() {
   const [myUpcomingOrders, setMyUpcomingOrders] = useState([]);
   const [myCompletedOrders, setMyCompletedOrders] = useState([]);
 
+  useEffect(() => {}, [myUpcomingOrders, myCompletedOrders]);
+
   useEffect(() => {
-    fetchMyUpcomingOrders().then((response) => {
+    getMyUpcomingOrders().then((response) => {
       setMyUpcomingOrders(response);
     });
-    fetchMyCompletedOrders().then((response) => {
+    getMyCompletedOrders().then((response) => {
       setMyCompletedOrders(response);
     });
   }, []);
@@ -22,7 +24,7 @@ function MyOrders() {
   const renderCards = (orders) => {
     return orders.map((order) => (
       <Grid item xs={12} sm={6} md={4} lg={3} key={order.id}>
-        <ItemCard itemId={order.id} />
+        <ItemCard listingId={order.id} />
       </Grid>
     ));
   };

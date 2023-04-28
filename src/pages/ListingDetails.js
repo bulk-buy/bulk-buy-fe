@@ -4,72 +4,48 @@ import {
   AccordionDetails,
   AccordionSummary,
   Box,
+  Button,
+  ButtonGroup,
   Grid,
   Paper,
   Typography,
 } from "@mui/material";
 import { getItem } from "apis/endpoints/ItemsEndpoints";
-import { getMyListing } from "apis/endpoints/MyListingEndpoints";
-import { getOrder } from "apis/endpoints/OrdersEndpoints";
-import { getUser } from "apis/endpoints/UserEndpoints";
+import { getListing } from "apis/endpoints/ListingEndpoints";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 
-function NameContainer({ userId }) {
-  const [user, setUser] = useState();
-
-  useEffect(() => {
-    getUser(userId).then((user) => {
-      setUser(user);
-    });
-  }, [userId]);
-
-  return (
-    <Typography variant="h5" gutterBottom component="div">
-      {user?.firstName} {user?.lastName}
-    </Typography>
-  );
-}
-
-function MyListingDetails() {
+function ListingDetails() {
   const { listingId } = useParams();
 
-  const [myListing, setMyListing] = useState();
-  const [myListingItems, setMyListingItems] = useState([]);
-  const [myListingOrders, setMyListingOrders] = useState([]);
+  const [listing, setListing] = useState();
+  const [items, setItems] = useState([]);
+  const [orders, setOrders] = useState([]);
 
-  /* Fetch my listing details */
+  /* Fetch listing details */
   useEffect(() => {
-    getMyListing(listingId).then((listing) => {
-      setMyListing(listing);
+    /* Fetch listing details */
+    getListing(listingId).then((listing) => {
+      setListing(listing);
     });
   }, [listingId]);
 
-  /* Fetch my listing items */
+  /* Fetch item details */
   useEffect(() => {
-    myListing?.items?.forEach((item) => {
+    listing?.items?.forEach((item) => {
       getItem(item.id).then((item) => {
-        setMyListingItems((items) => [...items, item]);
+        setItems((items) => [...items, item]);
       });
     });
-  }, [myListing?.items]);
-
-  /* Fetch my listing orders */
-  useEffect(() => {
-    myListing?.orders?.forEach((order) => {
-      getOrder(order.id).then((order) => {
-        setMyListingOrders((orders) => [...orders, order]);
-      });
-    });
-  }, [myListing?.orders]);
+  }, [listing?.items]);
 
   const renderListing = () => (
     <Grid item xs={12}>
       <Typography variant="h1" gutterBottom component="div">
-        {myListing?.title}
+        {listing?.title}
       </Typography>
       <Typography variant="subtitle1" gutterBottom component="div">
-        {myListing?.description}
+        {listing?.description}
       </Typography>
     </Grid>
   );
@@ -83,7 +59,7 @@ function MyListingDetails() {
       </AccordionSummary>
       <AccordionDetails>
         <Grid container spacing={2}>
-          {myListingItems?.map((item) => (
+          {items?.map((item) => (
             <Grid item container spacing={2} key={item.id}>
               <Grid item xs={9}>
                 <Typography variant="h5" gutterBottom component="div">
@@ -92,6 +68,13 @@ function MyListingDetails() {
                 <Typography variant="subtitle1" gutterBottom component="div">
                   {item.description}
                 </Typography>
+              </Grid>
+              <Grid item xs={3} textAlign="end">
+                <ButtonGroup>
+                  <Button variant="outlined">-</Button>
+                  <Button variant="outlined">0</Button>
+                  <Button variant="outlined">+</Button>
+                </ButtonGroup>
               </Grid>
             </Grid>
           ))}
@@ -107,28 +90,6 @@ function MyListingDetails() {
           Orders Summary
         </Typography>
       </AccordionSummary>
-      <AccordionDetails>
-        <Grid container spacing={2}>
-          {myListingOrders?.map((order) => (
-            <Grid item xs={12} key={order.id}>
-              <Typography variant="h5" gutterBottom component="div">
-                <NameContainer userId={order.user.id} />
-              </Typography>
-              {order.items.map((item) => (
-                <Typography
-                  variant="subtitle1"
-                  gutterBottom
-                  component="div"
-                  key={item.id}
-                >
-                  {myListingItems?.find((i) => i.id == item.id)?.title} x{" "}
-                  {item.quantity}
-                </Typography>
-              ))}
-            </Grid>
-          ))}
-        </Grid>
-      </AccordionDetails>
     </Accordion>
   );
 
@@ -139,7 +100,7 @@ function MyListingDetails() {
         sx={{
           height: 200,
         }}
-        alt={`${myListing?.category.name}`}
+        alt={`${listing?.category.name}`}
         src="/images/trolley512.png"
       />
       <Grid container spacing={2}>
@@ -157,4 +118,4 @@ function MyListingDetails() {
   );
 }
 
-export default MyListingDetails;
+export default ListingDetails;
