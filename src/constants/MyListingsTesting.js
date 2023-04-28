@@ -3,7 +3,7 @@ import { ListingsTesting } from "./ListingsTesting";
 
 export const MyActiveListingsTesting = ListingsTesting.filter((listing) => {
   return (
-    moment(listing.startDate).isBefore(moment(new Date())) &&
+    moment(listing.startDate).isSameOrBefore(moment(new Date())) &&
     moment(listing.endDate).isAfter(moment(new Date()))
   );
 });
