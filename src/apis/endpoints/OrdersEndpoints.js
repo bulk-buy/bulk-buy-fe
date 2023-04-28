@@ -11,17 +11,7 @@ export const getOrder = (orderId) => {
     //     console.error(error);
     //     reject(error);
     //   });
-    let orderDetails = OrdersTesting.find((order) => order.id == orderId);
-    resolve({
-      id: orderId,
-      items: orderDetails.items.map((item) => ({
-        id: item.id,
-        quantity: item.quantity,
-      })),
-      user: {
-        id: orderDetails.user.id,
-      },
-    });
+    resolve(OrdersTesting.find((order) => order.id == orderId));
   });
 };
 

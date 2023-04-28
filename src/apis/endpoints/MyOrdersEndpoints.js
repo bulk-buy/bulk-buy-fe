@@ -1,13 +1,11 @@
-import moment from "moment";
-
-const {
-  MyUpcomingOrdersTesting,
+import {
+  MyActiveOrdersTesting,
   MyCompletedOrdersTesting,
-} = require("constants/MyOrdersTesting");
+} from "constants/MyOrdersTesting";
 
-export const getMyUpcomingOrders = () => {
+export const getMyActiveOrders = () => {
   return new Promise((resolve, reject) => {
-    // BulkBuyMS.get("/my-orders/upcoming")
+    // BulkBuyMS.get("/my-orders/active")
     //   .then((response) => {
     //     resolve(response.data);
     //   })
@@ -16,11 +14,9 @@ export const getMyUpcomingOrders = () => {
     //     reject(error);
     //   });
     let orders = [];
-    MyUpcomingOrdersTesting.forEach((order) => {
-      if (moment(order.startDate).isAfter(moment(new Date()))) {
-        orders.push({
-          id: order.id,
-        });
+    MyActiveOrdersTesting.forEach((order) => {
+      if (order.user.id == 1) {
+        orders.push(order);
       }
       resolve(orders);
     });
@@ -39,10 +35,8 @@ export const getMyCompletedOrders = () => {
     //   });
     let orders = [];
     MyCompletedOrdersTesting.forEach((order) => {
-      if (moment(order.endDate).isBefore(moment(new Date()))) {
-        orders.push({
-          id: order.id,
-        });
+      if (order.user.id == 1) {
+        orders.push(order);
       }
       resolve(orders);
     });
