@@ -25,7 +25,7 @@ function Listings() {
         <Grid item xs={12}>
           {listings.length ? (
             <Grid container spacing={2}>
-              {listings.map((listing) => (
+              {listings?.map((listing) => (
                 <Grid item xs={12} sm={6} md={4} lg={3} key={listing.id}>
                   <ItemCard
                     listingId={listing.id}

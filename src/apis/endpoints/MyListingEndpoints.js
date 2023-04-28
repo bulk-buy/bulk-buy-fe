@@ -46,7 +46,7 @@ export const getMyCompletedListings = () => {
   });
 };
 
-export const getMyListingDetails = (listingId) => {
+export const getMyListing = (listingId) => {
   return new Promise((resolve, reject) => {
     // BulkBuyMS.get(`/my-listings/${listingId}`)
     //   .then((response) => {

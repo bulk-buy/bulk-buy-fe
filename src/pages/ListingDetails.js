@@ -10,9 +10,8 @@ import {
   Paper,
   Typography,
 } from "@mui/material";
-import { getItem, getItems } from "apis/endpoints/ItemsEndpoints";
+import { getItem } from "apis/endpoints/ItemsEndpoints";
 import { getListing } from "apis/endpoints/ListingEndpoints";
-import { getOrder, getOrders } from "apis/endpoints/OrdersEndpoints";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 
@@ -34,31 +33,11 @@ function ListingDetails() {
   /* Fetch item details */
   useEffect(() => {
     listing?.items?.forEach((item) => {
-      let items = [];
       getItem(item.id).then((item) => {
-        // setItems((items) => {
-        //   const index = items.findIndex((i) => i.id == item.id);
-        //   items[index] = item;
-        //   return [...items];
-        // });
-        items.push(item);
+        setItems((items) => [...items, item]);
       });
-      setItems(items);
     });
   }, [listing?.items]);
-
-  /* Fetch order details */
-  useEffect(() => {
-    listing?.orders?.forEach((order) => {
-      getOrder(order.id).then((order) => {
-        setOrders((orders) => {
-          const index = orders.findIndex((o) => o.id == order.id);
-          orders[index] = order;
-          return [...orders];
-        });
-      });
-    });
-  }, [listing?.orders]);
 
   const renderListing = () => (
     <Grid item xs={12}>
