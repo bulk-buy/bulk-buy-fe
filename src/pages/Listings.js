@@ -1,6 +1,7 @@
 import { Grid, Paper, Typography } from "@mui/material";
 import { getListings } from "apis/endpoints/ListingEndpoints";
 import ItemCard from "components/ItemCard";
+import labelImage from './images/bulk-buy-ad.gif';
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
@@ -17,6 +18,10 @@ function Listings() {
   }, []);
 
   return (
+    <div className="container">
+      <h1>Welcome to Bulk Buy Purchase</h1>
+      <img src={labelImage} alt="Bulk Buy" className="mainImage" />
+    </div>
     <Paper elevation={0}>
       <Grid container spacing={2}>
         <Grid item xs={12}>
