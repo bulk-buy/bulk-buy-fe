@@ -1,7 +1,6 @@
 import { Box, Grid, Paper, Typography } from "@mui/material";
 import { getListings } from "apis/endpoints/ListingEndpoints";
 import ItemCard from "components/ItemCard";
-import labelImage from "./images/bulk-buy-ad.gif";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
@@ -32,7 +31,7 @@ function Listings() {
               width: "100%",
             }}
             alt="BulkBuy"
-            src={labelImage}
+            src="/images/bulk-buy-ad.gif"
           />
         </Grid>
         <Grid item xs={12}>
