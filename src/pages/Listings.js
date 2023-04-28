@@ -1,5 +1,5 @@
 import { Grid, Paper, Typography } from "@mui/material";
-import { fetchListings } from "apis/endpoints/ListingEndpoints";
+import { getListings } from "apis/endpoints/ListingEndpoints";
 import ItemCard from "components/ItemCard";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
@@ -8,8 +8,10 @@ function Listings() {
   const navigate = useNavigate();
   const [listings, setListings] = useState([]);
 
+  useEffect(() => {}, [listings]);
+
   useEffect(() => {
-    fetchListings().then((response) => {
+    getListings().then((response) => {
       setListings(response);
     });
   }, []);

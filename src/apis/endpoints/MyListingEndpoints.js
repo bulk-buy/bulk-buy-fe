@@ -4,7 +4,7 @@ import {
   MyUpcomingListingsTesting,
 } from "constants/MyListingsTesting";
 
-export const fetchMyActiveListings = () => {
+export const getMyActiveListings = () => {
   return new Promise((resolve, reject) => {
     // BulkBuyMS.get("/my-listings/active")
     //   .then((response) => {
@@ -18,7 +18,7 @@ export const fetchMyActiveListings = () => {
   });
 };
 
-export const fetchMyUpcomingListings = () => {
+export const getMyUpcomingListings = () => {
   return new Promise((resolve, reject) => {
     // BulkBuyMS.get("/my-listings/upcoming")
     //   .then((response) => {
@@ -32,7 +32,7 @@ export const fetchMyUpcomingListings = () => {
   });
 };
 
-export const fetchMyCompletedListings = () => {
+export const getMyCompletedListings = () => {
   return new Promise((resolve, reject) => {
     // BulkBuyMS.get("/my-listings/completed")
     //   .then((response) => {
@@ -46,7 +46,7 @@ export const fetchMyCompletedListings = () => {
   });
 };
 
-export const fetchMyListingDetails = (listingId) => {
+export const getMyListingDetails = (listingId) => {
   return new Promise((resolve, reject) => {
     // BulkBuyMS.get(`/my-listings/${listingId}`)
     //   .then((response) => {

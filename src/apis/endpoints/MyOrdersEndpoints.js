@@ -5,7 +5,7 @@ const {
   MyCompletedOrdersTesting,
 } = require("constants/MyOrdersTesting");
 
-export const fetchMyUpcomingOrders = () => {
+export const getMyUpcomingOrders = () => {
   return new Promise((resolve, reject) => {
     // BulkBuyMS.get("/my-orders/upcoming")
     //   .then((response) => {
@@ -27,7 +27,7 @@ export const fetchMyUpcomingOrders = () => {
   });
 };
 
-export const fetchMyCompletedOrders = () => {
+export const getMyCompletedOrders = () => {
   return new Promise((resolve, reject) => {
     // BulkBuyMS.get("/my-orders/completed")
     //   .then((response) => {

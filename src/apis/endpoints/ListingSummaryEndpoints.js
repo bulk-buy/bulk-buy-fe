@@ -1,6 +1,6 @@
 import { ListingsTesting } from "constants/ListingsTesting";
 
-export const fetchListingSummary = (listingId) => {
+export const getListingSummary = (listingId) => {
   return new Promise((resolve, reject) => {
     // BulkBuyMS.get("/listings/:listingId/summary")
     //   .then((response) => {

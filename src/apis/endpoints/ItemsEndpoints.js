@@ -1,8 +1,9 @@
-import { CategoriesTesting } from "constants/CategoriesTesting";
+import { ItemsTesting } from "constants/ItemsTesting";
+import { ListingsTesting } from "constants/ListingsTesting";
 
-export const getCategories = () => {
+export const getItems = (listingId) => {
   return new Promise((resolve, reject) => {
-    // BulkBuyMS.get("/categories")
+    // BulkBuyMS.get(`/listings/${listingId}`)
     //   .then((response) => {
     //     resolve(response.data);
     //   })
@@ -10,13 +11,13 @@ export const getCategories = () => {
     //     console.error(error);
     //     reject(error);
     //   });
-    resolve(CategoriesTesting);
+    resolve(ItemsTesting.filter((item) => item.listingId == listingId));
   });
 };
 
-export const getCategory = (categoryId) => {
+export const getItem = (itemId) => {
   return new Promise((resolve, reject) => {
-    // BulkBuyMS.get(`/categories/${categoryId}`)
+    // BulkBuyMS.get(`/items/${itemId}`)
     //   .then((response) => {
     //     resolve(response.data);
     //   })
@@ -24,6 +25,6 @@ export const getCategory = (categoryId) => {
     //     console.error(error);
     //     reject(error);
     //   });
-    resolve(CategoriesTesting[categoryId]);
+    resolve(ItemsTesting.find((item) => item.id == itemId));
   });
 };

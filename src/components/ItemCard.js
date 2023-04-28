@@ -9,10 +9,10 @@ import {
   Typography,
   linearProgressClasses,
 } from "@mui/material";
-import { fetchCategory } from "apis/endpoints/CategoriesEndpoints";
-import { fetchListingSummary } from "apis/endpoints/ListingSummaryEndpoints";
-import { fetchOrderDetails } from "apis/endpoints/OrdersEndpoints";
-import { fetchUser } from "apis/endpoints/UserEndpoints";
+import { getCategory } from "apis/endpoints/CategoriesEndpoints";
+import { getListingSummary } from "apis/endpoints/ListingSummaryEndpoints";
+import { getOrder } from "apis/endpoints/OrdersEndpoints";
+import { getUser } from "apis/endpoints/UserEndpoints";
 import { useEffect, useState } from "react";
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
@@ -32,15 +32,15 @@ function ItemCard({ listingId, onClick }) {
   const [itemSummary, setItemSummary] = useState();
 
   useEffect(() => {
-    fetchListingSummary(listingId).then((listing) => {
-      fetchCategory(listing.category.id).then((category) => {
+    getListingSummary(listingId).then((listing) => {
+      getCategory(listing.category.id).then((category) => {
         listing.category = category;
       });
-      fetchUser(listing.postedBy.id).then((user) => {
+      getUser(listing.postedBy.id).then((user) => {
         listing.postedBy = user;
       });
       listing.orders.forEach((order, index) => {
-        fetchOrderDetails(order.id).then((order) => {
+        getOrder(order.id).then((order) => {
           listing.orders[index] = order;
         });
       });

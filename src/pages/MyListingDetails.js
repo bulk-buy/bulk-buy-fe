@@ -8,9 +8,8 @@ import {
   Paper,
   Typography,
 } from "@mui/material";
-import { fetchMyListingDetails } from "apis/endpoints/MyListingEndpoints";
-import { fetchOrderDetails } from "apis/endpoints/OrdersEndpoints";
-import { fetchUser } from "apis/endpoints/UserEndpoints";
+import { getMyListingDetails } from "apis/endpoints/MyListingEndpoints";
+import ItemsContainer from "components/ItemsContainer";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 
@@ -18,25 +17,13 @@ function MyListingDetails() {
   const { listingId } = useParams();
   const [myListingDetails, setMyListingDetails] = useState();
 
-  useEffect(() => {
-    fetchMyListingDetails(listingId).then((listing) => {
-      listing.orders.forEach((order, index) => {
-        fetchOrderDetails(order.id).then((order) => {
-          fetchUser(order.user.id).then((user) => {
-            order.user = user;
-          });
-          listing.orders[index] = order;
-        });
-      });
+  useEffect(() => {}, [myListingDetails]);
 
+  useEffect(() => {
+    getMyListingDetails(listingId).then((listing) => {
       setMyListingDetails(listing);
     });
   }, [listingId]);
-
-  const fetchItemTitle = (itemId) => {
-    const item = myListingDetails.items.find((item) => item.id === itemId);
-    return item.title;
-  };
 
   return (
     <Paper elevation={0}>
@@ -67,25 +54,11 @@ function MyListingDetails() {
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                  <Grid container spacing={2}>
-                    {myListingDetails.items.map((item) => (
-                      <Grid item xs={12} key={item.id}>
-                        <Typography variant="h5" gutterBottom component="div">
-                          {item.title}
-                        </Typography>
-                        <Typography
-                          variant="subtitle1"
-                          gutterBottom
-                          component="div"
-                        >
-                          {item.description}
-                        </Typography>
-                      </Grid>
-                    ))}
-                  </Grid>
+                  <ItemsContainer itemIdList={myListingDetails.items} />
+                  {/* {renderItems(myListingDetails.items)} */}
                 </AccordionDetails>
               </Accordion>
-              <Accordion defaultExpanded elevation={0}>
+              {/* <Accordion defaultExpanded elevation={0}>
                 <AccordionSummary expandIcon={<ExpandMore />}>
                   <Typography variant="h3" gutterBottom component="div">
                     Orders
@@ -112,7 +85,7 @@ function MyListingDetails() {
                     ))}
                   </Grid>
                 </AccordionDetails>
-              </Accordion>
+              </Accordion> */}
             </Grid>
           </Grid>
         </>

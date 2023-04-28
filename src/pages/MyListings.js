@@ -11,9 +11,9 @@ import {
   Typography,
 } from "@mui/material";
 import {
-  fetchMyActiveListings,
-  fetchMyCompletedListings,
-  fetchMyUpcomingListings,
+  getMyActiveListings,
+  getMyCompletedListings,
+  getMyUpcomingListings,
 } from "apis/endpoints/MyListingEndpoints";
 import CreateNewListingDialog from "components/CreateNewListingDialog";
 import ItemCard from "components/ItemCard";
@@ -28,14 +28,20 @@ function MyListings() {
   const [myCompletedListings, setMyCompletedListings] = useState([]);
   const [openNewListingDialog, setOpenNewListingDialog] = useState(false);
 
+  useEffect(() => {}, [
+    myActiveListings,
+    myUpcomingListings,
+    myCompletedListings,
+  ]);
+
   useEffect(() => {
-    fetchMyActiveListings().then((response) => {
+    getMyActiveListings().then((response) => {
       setMyActiveListings(response);
     });
-    fetchMyUpcomingListings().then((response) => {
+    getMyUpcomingListings().then((response) => {
       setMyUpcomingListings(response);
     });
-    fetchMyCompletedListings().then((response) => {
+    getMyCompletedListings().then((response) => {
       setMyCompletedListings(response);
     });
   }, []);

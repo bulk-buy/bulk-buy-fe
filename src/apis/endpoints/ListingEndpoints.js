@@ -2,7 +2,7 @@ import BulkBuyMS from "apis/BulkBuyMS";
 import { ListingsTesting } from "constants/ListingsTesting";
 import moment from "moment";
 
-export const fetchListings = () => {
+export const getListings = () => {
   return new Promise((resolve, reject) => {
     // BulkBuyMS.get("/listings")
     //   .then((response) => {
@@ -27,7 +27,7 @@ export const fetchListings = () => {
   });
 };
 
-export const fetchListing = (listingId) => {
+export const getListing = (listingId) => {
   return new Promise((resolve, reject) => {
     // BulkBuyMS.get(`/listings/${listingId}`)
     //   .then((response) => {

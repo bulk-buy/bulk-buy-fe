@@ -1,6 +1,6 @@
 import { UsersTesting } from "constants/UsersTesting";
 
-export const fetchUser = (userId) => {
+export const getUser = (userId) => {
   return new Promise((resolve, reject) => {
     // BulkBuyMS.get(`/users/${userId}`)
     //   .then((response) => {

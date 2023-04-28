@@ -1,12 +1,8 @@
 export const OrdersTesting = [
   {
     id: 1,
-    listing: {
-      id: 1,
-    },
-    user: {
-      id: 1,
-    },
+    listing: { id: 1 },
+    user: { id: 1 },
     items: [
       {
         id: 1,
@@ -20,12 +16,8 @@ export const OrdersTesting = [
   },
   {
     id: 2,
-    listing: {
-      id: 1,
-    },
-    user: {
-      id: 2,
-    },
+    listing: { id: 1 },
+    user: { id: 2 },
     items: [
       {
         id: 2,
@@ -35,12 +27,8 @@ export const OrdersTesting = [
   },
   {
     id: 3,
-    listing: {
-      id: 4,
-    },
-    user: {
-      id: 1,
-    },
+    listing: { id: 4 },
+    user: { id: 1 },
     items: [
       {
         id: 1,
@@ -50,12 +38,8 @@ export const OrdersTesting = [
   },
   {
     id: 4,
-    listing: {
-      id: 4,
-    },
-    user: {
-      id: 2,
-    },
+    listing: { id: 4 },
+    user: { id: 2 },
     items: [
       {
         id: 2,
@@ -65,12 +49,8 @@ export const OrdersTesting = [
   },
   {
     id: 5,
-    listing: {
-      id: 3,
-    },
-    user: {
-      id: 1,
-    },
+    listing: { id: 3 },
+    user: { id: 1 },
     items: [
       {
         id: 1,
