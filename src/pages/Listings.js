@@ -21,10 +21,12 @@ function Listings() {
 
     <Paper elevation={0}>
       <Grid container spacing={2}>
-    <div className="container">
-      <h1>Welcome to Bulk Buy Purchase</h1>
-      <img src={labelImage} alt="Bulk Buy" className="mainImage" />
-    </div>
+	    <Grid item xs={12}>
+          <Typography variant="h2">Welcome to Bulk Buy Purchase</Typography>
+        </Grid>
+		<Grid item xs={12}>
+            <img src={labelImage} alt="Bulk Buy" className="mainImage" />
+        </Grid>
         <Grid item xs={12}>
           <Typography variant="h2">Available listings</Typography>
         </Grid>
