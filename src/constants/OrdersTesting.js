@@ -31,7 +31,7 @@ export const OrdersTesting = [
     user: { id: 1 },
     items: [
       {
-        id: 1,
+        id: 3,
         quantity: 1,
       },
     ],
@@ -42,7 +42,7 @@ export const OrdersTesting = [
     user: { id: 2 },
     items: [
       {
-        id: 2,
+        id: 4,
         quantity: 2,
       },
     ],
@@ -53,7 +53,7 @@ export const OrdersTesting = [
     user: { id: 1 },
     items: [
       {
-        id: 1,
+        id: 7,
         quantity: 1,
       },
     ],
