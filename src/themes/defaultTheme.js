@@ -12,6 +12,13 @@ export const defaultTheme = createTheme({
     },
   },
   components: {
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "#d5c075",
+        },
+      },
+    },
     MuiFormHelperText: {
       styleOverrides: {
         root: {
@@ -23,6 +30,14 @@ export const defaultTheme = createTheme({
       styleOverrides: {
         root: {
           margin: "0.5rem 0",
+        },
+      },
+    },
+    MuiAccordionSummary: {
+      styleOverrides: {
+        root: {
+          padding: 0,
+          borderBottom: "1px solid #717171de",
         },
       },
     },
