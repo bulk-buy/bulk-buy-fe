@@ -126,7 +126,7 @@ function LeftNavigation() {
       >
         <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
-            {theme.direction === "ltr" ? <ChevronLeft /> : <ChevronRight />}
+            {theme.direction == "ltr" ? <ChevronLeft /> : <ChevronRight />}
           </IconButton>
         </DrawerHeader>
         <Divider />
