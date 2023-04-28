@@ -1,11 +1,13 @@
 import { ExpandMore } from "@mui/icons-material";
 import {
   Accordion,
+  AccordionActions,
   AccordionDetails,
   AccordionSummary,
   Box,
   Button,
   ButtonGroup,
+  Divider,
   Grid,
   Paper,
   Typography,
@@ -35,6 +37,7 @@ function ListingDetails() {
     listing?.items?.forEach((item) => {
       getItem(item.id).then((item) => {
         setItems((items) => [...items, item]);
+        // setOrders((order) => [...order, { id: item.id, quantity: 0 }]);
       });
     });
   }, [listing?.items]);
@@ -49,6 +52,53 @@ function ListingDetails() {
       </Typography>
     </Grid>
   );
+
+  const handleClickAddItem = (itemId) => {
+    if (orders.find((order) => order.id == itemId) == undefined) {
+      setOrders((orders) => [...orders, { id: itemId, quantity: 1 }]);
+    } else {
+      setOrders((orders) => {
+        let newOrders = [...orders];
+        newOrders.forEach((order, index) => {
+          if (order.id == itemId) {
+            newOrders[index].quantity++;
+          }
+        });
+        return newOrders;
+      });
+    }
+  };
+
+  const handleClickMinusItem = (itemId) => {
+    if (orders.find((order) => order.id == itemId) == undefined) {
+      return;
+    } else if (orders.find((order) => order.id == itemId).quantity == 1) {
+      setOrders((orders) => {
+        let newOrders = [...orders];
+        newOrders.forEach((order, index) => {
+          if (order.id == itemId) {
+            newOrders.splice(index, 1);
+          }
+        });
+        return newOrders;
+      });
+    } else {
+      setOrders((orders) => {
+        let newOrders = [...orders];
+        newOrders.forEach((order, index) => {
+          if (order.id == itemId) {
+            newOrders[index].quantity--;
+          }
+        });
+        return newOrders;
+      });
+    }
+  };
+
+  const getOrderCount = (item) => {
+    let order = orders.find((order) => order.id == item.id);
+    return order?.quantity || 0;
+  };
 
   const renderItems = () => (
     <Accordion defaultExpanded elevation={0}>
@@ -71,9 +121,19 @@ function ListingDetails() {
               </Grid>
               <Grid item xs={3} textAlign="end">
                 <ButtonGroup>
-                  <Button variant="outlined">-</Button>
-                  <Button variant="outlined">0</Button>
-                  <Button variant="outlined">+</Button>
+                  <Button
+                    variant="outlined"
+                    onClick={() => handleClickMinusItem(item.id)}
+                  >
+                    -
+                  </Button>
+                  <Button variant="outlined">{getOrderCount(item)}</Button>
+                  <Button
+                    variant="outlined"
+                    onClick={() => handleClickAddItem(item.id)}
+                  >
+                    +
+                  </Button>
                 </ButtonGroup>
               </Grid>
             </Grid>
@@ -83,6 +143,10 @@ function ListingDetails() {
     </Accordion>
   );
 
+  const handleSubmitOrders = () => {
+    console.log(orders);
+  };
+
   const renderOrders = () => (
     <Accordion defaultExpanded elevation={0}>
       <AccordionSummary expandIcon={<ExpandMore />}>
@@ -90,6 +154,64 @@ function ListingDetails() {
           Orders Summary
         </Typography>
       </AccordionSummary>
+      <AccordionDetails>
+        <Grid container spacing={2}>
+          <Grid item xs={9}>
+            <Typography variant="h5" gutterBottom component="div">
+              items
+            </Typography>
+          </Grid>
+          <Grid item xs={3} textAlign="end">
+            <Typography variant="h5" gutterBottom component="div">
+              Price (SGD)
+            </Typography>
+          </Grid>
+          {orders?.map((order) => (
+            <Grid item container spacing={2} key={order.id}>
+              <Grid item xs={9}>
+                <Typography variant="body1" gutterBottom component="div">
+                  {`${items?.find((item) => item.id == order.id)?.title} x ${
+                    order.quantity
+                  }`}
+                </Typography>
+              </Grid>
+              <Grid item xs={3} textAlign="end">
+                <Typography variant="body1" gutterBottom component="div">
+                  {items?.find((item) => item.id == order.id)?.price *
+                    order.quantity}
+                </Typography>
+              </Grid>
+            </Grid>
+          ))}
+          <Grid item xs={9}>
+            <Typography variant="h5" gutterBottom component="div">
+              Total
+            </Typography>
+          </Grid>
+          <Grid item xs={3} textAlign="end">
+            <Typography variant="h5" gutterBottom component="div">
+              {orders?.reduce((total, order) => {
+                return (
+                  total +
+                  items?.find((item) => item.id == order.id)?.price *
+                    order.quantity
+                );
+              }, 0)}
+            </Typography>
+          </Grid>
+        </Grid>
+      </AccordionDetails>
+      <AccordionActions>
+        <Button
+          variant="contained"
+          color="secondary"
+          fullWidth
+          disabled={!orders.length}
+          onClick={() => handleSubmitOrders()}
+        >
+          Confirm Orders
+        </Button>
+      </AccordionActions>
     </Accordion>
   );
 
