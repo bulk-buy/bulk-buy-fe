@@ -5,6 +5,7 @@ import ListingDetails from "pages/ListingDetails";
 import Listings from "pages/Listings";
 import MyListingDetails from "pages/MyListingDetails";
 import MyListings from "pages/MyListings";
+import MyOrderDetails from "pages/MyOrderDetails";
 import MyOrders from "pages/MyOrders";
 import Profile from "pages/Profile";
 import { createBrowserRouter } from "react-router-dom";
@@ -19,16 +20,16 @@ export const router = createBrowserRouter([
         element: <Listings />,
       },
       {
+        path: "/profile",
+        element: <Profile />,
+      },
+      {
         path: "/listings",
         element: <Listings />,
       },
       {
         path: "/listings/:listingId",
         element: <ListingDetails />,
-      },
-      {
-        path: "/profile",
-        element: <Profile />,
       },
       {
         path: "my-listings",
@@ -41,6 +42,10 @@ export const router = createBrowserRouter([
       {
         path: "my-orders",
         element: <MyOrders />,
+      },
+      {
+        path: "my-orders/:orderId",
+        element: <MyOrderDetails />,
       },
       /* Error Pages */
       {

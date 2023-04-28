@@ -15,7 +15,7 @@ export const getListings = () => {
     let listings = [];
     ListingsTesting.forEach((listing) => {
       if (
-        moment(listing.startDate).isBefore(moment(new Date())) &&
+        moment(listing.startDate).isSameOrBefore(moment(new Date())) &&
         moment(listing.endDate).isAfter(moment(new Date()))
       ) {
         listings.push({
