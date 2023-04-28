@@ -11,9 +11,8 @@ export const fetchListingSummary = (listingId) => {
     //     reject(error);
     // //   });
     let listingSummary = ListingsTesting.find(
-      (listing) => listing.id.toString() === listingId.toString()
+      (listing) => listing.id == listingId
     );
-
     resolve({
       id: listingId,
       title: listingSummary.title,
@@ -21,6 +20,11 @@ export const fetchListingSummary = (listingId) => {
       category: { id: listingSummary.category.id },
       startDate: listingSummary.startDate,
       endDate: listingSummary.endDate,
+      minRequired: listingSummary.minRequired,
+      postedBy: {
+        id: listingSummary.postedBy.id,
+      },
+      orders: listingSummary.orders,
     });
   });
 };

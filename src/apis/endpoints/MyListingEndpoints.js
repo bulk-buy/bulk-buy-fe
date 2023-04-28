@@ -61,9 +61,7 @@ export const fetchMyListingDetails = (listingId) => {
       ...MyUpcomingListingsTesting,
       ...MyCompletedListingsTesting,
     ];
-    let listing = listings.find(
-      (listing) => listing.id.toString() === listingId.toString()
-    );
+    let listing = listings.find((listing) => listing.id == listingId);
 
     resolve(listing);
   });

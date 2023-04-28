@@ -12,6 +12,13 @@ export const ListingsTesting = [
     },
     startDate: moment(new Date()).format("YYYY-MM-DD"),
     endDate: moment(new Date()).add(1, "d").format("YYYY-MM-DD"),
+    minRequired: 10,
+    postedBy: {
+      id: 1,
+      firstName: "User",
+      lastName: "1",
+      postalCode: "123456",
+    },
     items: [
       {
         id: 1,
@@ -26,40 +33,7 @@ export const ListingsTesting = [
         price: 200,
       },
     ],
-    orders: [
-      {
-        id: 1,
-        user: {
-          id: 1,
-          firstName: "User",
-          lastName: "1",
-        },
-        items: [
-          {
-            id: 1,
-            quantity: 1,
-          },
-          {
-            id: 2,
-            quantity: 2,
-          },
-        ],
-      },
-      {
-        id: 2,
-        user: {
-          id: 2,
-          firstName: "User",
-          lastName: "2",
-        },
-        items: [
-          {
-            id: 2,
-            quantity: 1,
-          },
-        ],
-      },
-    ],
+    orders: [{ id: 1 }, { id: 2 }],
   },
   {
     id: 4,
@@ -72,6 +46,13 @@ export const ListingsTesting = [
     },
     startDate: moment(new Date()).format("YYYY-MM-DD"),
     endDate: moment(new Date()).add(1, "d").format("YYYY-MM-DD"),
+    minRequired: 40,
+    postedBy: {
+      id: 1,
+      firstName: "User",
+      lastName: "1",
+      postalCode: "123456",
+    },
     items: [
       {
         id: 1,
@@ -86,36 +67,7 @@ export const ListingsTesting = [
         price: 200,
       },
     ],
-    orders: [
-      {
-        id: 1,
-        user: {
-          id: 1,
-          firstName: "User",
-          lastName: "1",
-        },
-        items: [
-          {
-            id: 1,
-            quantity: 1,
-          },
-        ],
-      },
-      {
-        id: 2,
-        user: {
-          id: 2,
-          firstName: "User",
-          lastName: "2",
-        },
-        items: [
-          {
-            id: 2,
-            quantity: 1,
-          },
-        ],
-      },
-    ],
+    orders: [{ id: 3 }, { id: 4 }],
   },
   {
     id: 2,
@@ -128,6 +80,13 @@ export const ListingsTesting = [
     },
     startDate: moment(new Date()).add(1, "d").format("YYYY-MM-DD"),
     endDate: moment(new Date()).add(2, "d").format("YYYY-MM-DD"),
+    minRequired: 20,
+    postedBy: {
+      id: 1,
+      firstName: "User",
+      lastName: "1",
+      postalCode: "123456",
+    },
     items: [
       {
         id: 1,
@@ -155,6 +114,13 @@ export const ListingsTesting = [
     },
     startDate: moment(new Date()).subtract(2, "d").format("YYYY-MM-DD"),
     endDate: moment(new Date()).subtract(1, "d").format("YYYY-MM-DD"),
+    minRequired: 30,
+    postedBy: {
+      id: 1,
+      firstName: "User",
+      lastName: "1",
+      postalCode: "123456",
+    },
     items: [
       {
         id: 1,
@@ -169,21 +135,6 @@ export const ListingsTesting = [
         price: 200,
       },
     ],
-    orders: [
-      {
-        id: 1,
-        user: {
-          id: 1,
-          firstName: "User",
-          lastName: "1",
-        },
-        items: [
-          {
-            id: 1,
-            quantity: 1,
-          },
-        ],
-      },
-    ],
+    orders: [{ id: 5 }],
   },
 ];

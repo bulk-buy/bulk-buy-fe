@@ -37,9 +37,7 @@ export const fetchListing = (listingId) => {
     //     console.error(error);
     //     reject(error);
     //   });
-    let listing = ListingsTesting.find(
-      (listing) => listing.id.toString() === listingId.toString()
-    );
+    let listing = ListingsTesting.find((listing) => listing.id == listingId);
     resolve({
       id: listing.id,
       title: listing.title,

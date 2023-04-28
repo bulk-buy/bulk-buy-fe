@@ -1,0 +1,32 @@
+export const UsersTesting = [
+  {
+    id: 1,
+    firstName: "User",
+    lastName: "1",
+    phone: "+6598765432",
+    streetName: "Street 1",
+    block: "1",
+    unit: "01-01",
+    postalCode: "123456",
+  },
+  {
+    id: 2,
+    firstName: "User",
+    lastName: "2",
+    phone: "+6598765432",
+    streetName: "Street 2",
+    block: "2",
+    unit: "02-02",
+    postalCode: "123456",
+  },
+  {
+    id: 3,
+    firstName: "User",
+    lastName: "3",
+    phone: "+6598765432",
+    streetName: "Street 3",
+    block: "3",
+    unit: "03-03",
+    postalCode: "987654",
+  },
+];
