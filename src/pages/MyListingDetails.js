@@ -9,6 +9,8 @@ import {
   Typography,
 } from "@mui/material";
 import { fetchMyListingDetails } from "apis/endpoints/MyListingEndpoints";
+import { fetchOrderDetails } from "apis/endpoints/OrdersEndpoints";
+import { fetchUser } from "apis/endpoints/UserEndpoints";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 
@@ -17,8 +19,17 @@ function MyListingDetails() {
   const [myListingDetails, setMyListingDetails] = useState();
 
   useEffect(() => {
-    fetchMyListingDetails(listingId).then((response) => {
-      setMyListingDetails(response);
+    fetchMyListingDetails(listingId).then((listing) => {
+      listing.orders.forEach((order, index) => {
+        fetchOrderDetails(order.id).then((order) => {
+          fetchUser(order.user.id).then((user) => {
+            order.user = user;
+          });
+          listing.orders[index] = order;
+        });
+      });
+
+      setMyListingDetails(listing);
     });
   }, [listingId]);
 

@@ -18,6 +18,9 @@ export const fetchOrderDetails = (orderId) => {
         id: item.id,
         quantity: item.quantity,
       })),
+      user: {
+        id: orderDetails.user.id,
+      },
     });
   });
 };

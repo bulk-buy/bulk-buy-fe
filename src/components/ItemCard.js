@@ -29,31 +29,22 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 }));
 
 function ItemCard({ listingId, onClick }) {
-  const [itemSummary, setItemSummary] = useState({});
-  const [postedBy, setPostedBy] = useState({});
+  const [itemSummary, setItemSummary] = useState();
 
   useEffect(() => {
-    fetchListingSummary(listingId).then((response) => {
-      setItemSummary(response);
-      fetchCategory(response.category.id).then((response) => {
-        setItemSummary((prevState) => ({
-          ...prevState,
-          category: response,
-        }));
+    fetchListingSummary(listingId).then((listing) => {
+      fetchCategory(listing.category.id).then((category) => {
+        listing.category = category;
       });
-      fetchUser(response.postedBy.id).then((response) => {
-        setPostedBy(response);
+      fetchUser(listing.postedBy.id).then((user) => {
+        listing.postedBy = user;
       });
-      response.orders.forEach((order) => {
-        fetchOrderDetails(order.id).then((response) => {
-          setItemSummary((prevState) => ({
-            ...prevState,
-            orders: prevState.orders
-              ? [...prevState.orders, response]
-              : [response],
-          }));
+      listing.orders.forEach((order, index) => {
+        fetchOrderDetails(order.id).then((order) => {
+          listing.orders[index] = order;
         });
       });
+      setItemSummary(listing);
     });
   }, [listingId]);
 
@@ -73,7 +64,7 @@ function ItemCard({ listingId, onClick }) {
     return orderCount;
   };
 
-  return (
+  return itemSummary ? (
     <Card sx={{ maxWidth: 345 }} onClick={onClick}>
       <CardActionArea>
         <CardMedia component="img" height="140" src="/images/trolley512.png" />
@@ -85,7 +76,7 @@ function ItemCard({ listingId, onClick }) {
             {itemSummary.description}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {`Posted by ${postedBy.firstName} ${postedBy.lastName}`}
+            {`Posted by ${itemSummary.postedBy.firstName} ${itemSummary.postedBy.lastName}`}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             {`Minimum orders required: ${itemSummary.minRequired}`}
@@ -109,6 +100,8 @@ function ItemCard({ listingId, onClick }) {
         </CardContent>
       </CardActionArea>
     </Card>
+  ) : (
+    <></>
   );
 }
 
