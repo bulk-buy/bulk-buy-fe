@@ -4,6 +4,7 @@ export const UsersTesting = [
     firstName: "User",
     lastName: "1",
     phone: "+6598765432",
+    email: "terenceong95@gmail.com",
     streetName: "Street 1",
     block: "1",
     unit: "01-01",

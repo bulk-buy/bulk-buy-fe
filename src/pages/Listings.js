@@ -1,12 +1,16 @@
 import { Box, Grid, Paper, Typography } from "@mui/material";
 import { getListings } from "apis/endpoints/ListingEndpoints";
 import ItemCard from "components/ItemCard";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 
 function Listings() {
   const navigate = useNavigate();
+  const userInfo = useSelector((state) => state.userInfo.user);
+
   const [listings, setListings] = useState([]);
+  const [receommendedListings, setRecommendedListings] = useState([]);
 
   useEffect(() => {}, [listings]);
 
