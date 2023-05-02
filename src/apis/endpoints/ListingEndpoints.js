@@ -37,23 +37,7 @@ export const getListing = (listingId) => {
     //     console.error(error);
     //     reject(error);
     //   });
-    let listing = ListingsTesting.find((listing) => listing.id == listingId);
-    resolve({
-      id: listing.id,
-      title: listing.title,
-      description: listing.description,
-      category: {
-        id: listing.category.id,
-      },
-      startDate: listing.startDate,
-      endDate: listing.endDate,
-      items: listing.items.map((item) => ({
-        id: item.id,
-        title: item.title,
-        description: item.description,
-        price: item.price,
-      })),
-    });
+    resolve(ListingsTesting.find((listing) => listing.id == listingId));
   });
 };
 

@@ -11,7 +11,7 @@ export const getItems = (listingId) => {
     //     console.error(error);
     //     reject(error);
     //   });
-    resolve(ItemsTesting.filter((item) => item.listingId == listingId));
+    resolve(ItemsTesting.filter((item) => item.listing.id == listingId));
   });
 };
 

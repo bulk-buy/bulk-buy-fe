@@ -70,16 +70,16 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 }));
 
 function LeftNavigation() {
-  const { user, signOut } = useAuthenticator();
+  // const { user, signOut } = useAuthenticator();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const theme = useTheme();
 
   const [open, setOpen] = React.useState(true);
 
-  useEffect(() => {
-    dispatch(setCognitoInfo(user));
-  }, [user, dispatch]);
+  // useEffect(() => {
+  //   dispatch(setCognitoInfo(user));
+  // }, [user, dispatch]);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -156,12 +156,12 @@ function LeftNavigation() {
             </ListItem>
           ))}
           <ListItem key="signout" disablePadding sx={{ marginTop: "auto" }}>
-            <ListItemButton color="error" onClick={signOut}>
+            {/* <ListItemButton color="error" onClick={signOut}>
               <ListItemIcon color="error">
                 <Logout />
               </ListItemIcon>
               <ListItemText primary="Logout" />
-            </ListItemButton>
+            </ListItemButton> */}
           </ListItem>
         </List>
       </Drawer>
@@ -173,4 +173,5 @@ function LeftNavigation() {
   );
 }
 
-export default withAuthenticator(LeftNavigation);
+export default LeftNavigation;
+// export default withAuthenticator(LeftNavigation);

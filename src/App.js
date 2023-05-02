@@ -16,12 +16,13 @@ const components = {
 
 function App() {
   return (
-    <Authenticator>
-      <RouterProvider router={router}>
-        <LeftNavigation />
-      </RouterProvider>
-    </Authenticator>
+    // <Authenticator>
+    <RouterProvider router={router}>
+      <LeftNavigation />
+    </RouterProvider>
+    // </Authenticator>
   );
 }
 
-export default withAuthenticator(App, { components: components });
+export default App;
+// export default withAuthenticator(App, { components: components });
