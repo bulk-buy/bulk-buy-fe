@@ -16,11 +16,11 @@ const components = {
 
 function App() {
   return (
-    // <Authenticator socialProviders={["google"]}>
-    <RouterProvider router={router}>
-      <LeftNavigation />
-    </RouterProvider>
-    // </Authenticator>
+    <Authenticator>
+      <RouterProvider router={router}>
+        <LeftNavigation />
+      </RouterProvider>
+    </Authenticator>
   );
 }
 
