@@ -4,40 +4,32 @@ import moment from "moment";
 
 export const getListings = () => {
   return new Promise((resolve, reject) => {
-    // BulkBuyMS.get("/listings")
-    //   .then((response) => {
-    //     resolve(response.data);
-    //   })
-    //   .catch((error) => {
-    //     console.error(error);
-    //     reject(error);
-    //   });
-    let listings = [];
-    ListingsTesting.forEach((listing) => {
-      if (
-        moment(listing.startDate).isSameOrBefore(moment(new Date())) &&
-        moment(listing.endDate).isAfter(moment(new Date()))
-      ) {
-        listings.push({
-          id: listing.id,
-        });
-      }
-    });
-    resolve(listings);
+    BulkBuyMS.get("/listings")
+      .then((response) => {
+        let listings = response.data;
+        resolve(
+          listings.filter((listing) =>
+            moment(listing.endDate).isSameOrAfter(moment())
+          )
+        );
+      })
+      .catch((error) => {
+        console.error(error);
+        reject(error);
+      });
   });
 };
 
 export const getListing = (listingId) => {
   return new Promise((resolve, reject) => {
-    // BulkBuyMS.get(`/listings/${listingId}`)
-    //   .then((response) => {
-    //     resolve(response.data);
-    //   })
-    //   .catch((error) => {
-    //     console.error(error);
-    //     reject(error);
-    //   });
-    resolve(ListingsTesting.find((listing) => listing.id == listingId));
+    BulkBuyMS.get(`/listings/${listingId}`)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+        reject(error);
+      });
   });
 };
 
@@ -54,5 +46,31 @@ export const getRecommendedListings = () => {
     let listings = [];
     listings.push(ListingsTesting[3]);
     resolve(listings);
+  });
+};
+
+export const patchListing = (listingId, listing) => {
+  return new Promise((resolve, reject) => {
+    BulkBuyMS.patch(`/listings/${listingId}`, listing)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+        reject(error);
+      });
+  });
+};
+
+export const postListing = (listing) => {
+  return new Promise((resolve, reject) => {
+    BulkBuyMS.post("/listings", listing)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+        reject(error);
+      });
   });
 };

@@ -45,7 +45,6 @@ function ListingDialog({
   useEffect(() => {
     if (listingId) {
       getListing(listingId).then((listing) => {
-        console.log(listing);
         setListing(listing);
         getItems(listingId).then((items) => {
           setListing({ ...listing, items: items });

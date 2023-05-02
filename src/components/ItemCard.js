@@ -10,7 +10,7 @@ import {
   linearProgressClasses,
 } from "@mui/material";
 import { getCategory } from "apis/endpoints/CategoriesEndpoints";
-import { getListingSummary } from "apis/endpoints/ListingSummaryEndpoints";
+import { getListing } from "apis/endpoints/ListingEndpoints";
 import { getOrder } from "apis/endpoints/OrdersEndpoints";
 import { getUser } from "apis/endpoints/UserEndpoints";
 import { useEffect, useState } from "react";
@@ -35,7 +35,7 @@ function ItemCard({ listingId, onClick }) {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    getListingSummary(listingId).then((listing) => {
+    getListing(listingId).then((listing) => {
       setItemSummary(listing);
     });
   }, [listingId]);

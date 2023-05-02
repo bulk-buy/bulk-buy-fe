@@ -199,7 +199,7 @@ function MyListingDetails() {
                 fullWidth
                 onClick={handleConfirmDeleteListing}
               >
-                Confirm Delete
+                Delete
               </Button>
             </Grid>
           </Grid>
