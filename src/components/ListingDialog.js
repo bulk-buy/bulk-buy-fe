@@ -13,6 +13,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { getItems, deleteItem } from "apis/endpoints/ItemsEndpoints";
 import { getListing } from "apis/endpoints/ListingEndpoints";
 import { CategoriesTesting } from "constants/CategoriesTesting";
 import { useFormik } from "formik";
@@ -31,6 +32,7 @@ function ListingDialog({
     category: "",
     startDate: moment(new Date()).format("YYYY-MM-DD"),
     endDate: moment(new Date()).format("YYYY-MM-DD"),
+    minRequired: 0,
     items: [
       {
         title: "",
@@ -42,8 +44,12 @@ function ListingDialog({
 
   useEffect(() => {
     if (listingId) {
-      getListing(listingId).then((response) => {
-        setListing(response);
+      getListing(listingId).then((listing) => {
+        console.log(listing);
+        setListing(listing);
+        getItems(listingId).then((items) => {
+          setListing({ ...listing, items: items });
+        });
       });
     }
   }, [listingId]);
@@ -52,6 +58,9 @@ function ListingDialog({
     title: Yup.string().required("Title is required"),
     description: Yup.string().required("Description is required"),
     category: Yup.string().required("Category is required"),
+    startDate: Yup.date().required("Start Date is required"),
+    endDate: Yup.date().required("End Date is required"),
+    minRequired: Yup.number().required("Minimum Required is required"),
     items: Yup.array().of(
       Yup.object().shape({
         title: Yup.string().required("Title is required"),
@@ -63,7 +72,7 @@ function ListingDialog({
     ),
   });
 
-  const newListingForm = useFormik({
+  const listingForm = useFormik({
     initialValues: listing,
     onSubmit: (values) => {
       console.log(values);
@@ -78,8 +87,10 @@ function ListingDialog({
       maxWidth="md"
       onClose={() => setOpenNewListingDialog(false)}
     >
-      <form onSubmit={newListingForm.handleSubmit}>
-        <DialogTitle textAlign="center">Create New Listing</DialogTitle>
+      <form onSubmit={listingForm.handleSubmit}>
+        <DialogTitle textAlign="center">
+          {listingId ? "Update Listing" : "Create New Listing"}
+        </DialogTitle>
         <DialogContent>
           <Grid container spacing={2}>
             <Grid item xs={12}>
@@ -88,11 +99,11 @@ function ListingDialog({
                 required
                 label="Title"
                 name="title"
-                value={newListingForm.values.title}
-                onChange={newListingForm.handleChange}
+                value={listingForm.values.title}
+                onChange={listingForm.handleChange}
                 helperText={
-                  newListingForm.errors.title && newListingForm.touched.title
-                    ? newListingForm.errors.title
+                  listingForm.errors.title && listingForm.touched.title
+                    ? listingForm.errors.title
                     : null
                 }
               />
@@ -104,12 +115,12 @@ function ListingDialog({
                 multiline
                 label="Description"
                 name="description"
-                value={newListingForm.values.description}
-                onChange={newListingForm.handleChange}
+                value={listingForm.values.description}
+                onChange={listingForm.handleChange}
                 helperText={
-                  newListingForm.errors.description &&
-                  newListingForm.touched.description
-                    ? newListingForm.errors.description
+                  listingForm.errors.description &&
+                  listingForm.touched.description
+                    ? listingForm.errors.description
                     : null
                 }
               />
@@ -121,12 +132,11 @@ function ListingDialog({
                 select
                 label="Category"
                 name="category"
-                value={newListingForm.values.category}
-                onChange={newListingForm.handleChange}
+                value={listingForm.values.category}
+                onChange={listingForm.handleChange}
                 helperText={
-                  newListingForm.errors.category &&
-                  newListingForm.touched.category
-                    ? newListingForm.errors.category
+                  listingForm.errors.category && listingForm.touched.category
+                    ? listingForm.errors.category
                     : null
                 }
               >
@@ -144,12 +154,11 @@ function ListingDialog({
                 type="date"
                 fullWidth
                 required
-                value={newListingForm.values.startDate}
-                onChange={newListingForm.handleChange}
+                value={listingForm.values.startDate}
+                onChange={listingForm.handleChange}
                 helperText={
-                  newListingForm.errors.startDate &&
-                  newListingForm.touched.startDate
-                    ? newListingForm.errors.startDate
+                  listingForm.errors.startDate && listingForm.touched.startDate
+                    ? listingForm.errors.startDate
                     : null
                 }
               />
@@ -161,19 +170,35 @@ function ListingDialog({
                 type="date"
                 fullWidth
                 required
-                value={newListingForm.values.endDate}
-                onChange={newListingForm.handleChange}
+                value={listingForm.values.endDate}
+                onChange={listingForm.handleChange}
                 helperText={
-                  newListingForm.errors.endDate &&
-                  newListingForm.touched.endDate
-                    ? newListingForm.errors.endDate
+                  listingForm.errors.endDate && listingForm.touched.endDate
+                    ? listingForm.errors.endDate
+                    : null
+                }
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                required
+                label="Minimum Required"
+                name="minRequired"
+                type="number"
+                value={listingForm.values.minRequired}
+                onChange={listingForm.handleChange}
+                helperText={
+                  listingForm.errors.minRequired &&
+                  listingForm.touched.minRequired
+                    ? listingForm.errors.minRequired
                     : null
                 }
               />
             </Grid>
             <Grid item xs={12}>
               <Divider />
-              {newListingForm.values.items.map((item, index) => (
+              {listingForm.values.items.map((item, index) => (
                 <Grid container spacing={2} key={index}>
                   <Grid item xs={10}>
                     <Typography variant="h6">Item {index + 1}</Typography>
@@ -181,11 +206,14 @@ function ListingDialog({
                   <Grid item xs={2} textAlign="end">
                     <IconButton
                       onClick={() => {
-                        newListingForm.values.items.splice(index, 1);
-                        newListingForm.setFieldValue(
+                        listingForm.values.items.splice(index, 1);
+                        listingForm.setFieldValue(
                           "items",
-                          newListingForm.values.items
+                          listingForm.values.items
                         );
+                        if (item.id) {
+                          deleteItem(item.id);
+                        }
                       }}
                     >
                       <Delete />
@@ -198,15 +226,15 @@ function ListingDialog({
                       label="Title"
                       name={`items[${index}].title`}
                       value={item.title}
-                      onChange={newListingForm.handleChange}
+                      onChange={listingForm.handleChange}
                       helperText={
-                        newListingForm.errors.items &&
-                        newListingForm.errors.items[index] &&
-                        newListingForm.errors.items[index].title &&
-                        newListingForm.touched.items &&
-                        newListingForm.touched.items[index] &&
-                        newListingForm.touched.items[index].title
-                          ? newListingForm.errors.items[index].title
+                        listingForm.errors.items &&
+                        listingForm.errors.items[index] &&
+                        listingForm.errors.items[index].title &&
+                        listingForm.touched.items &&
+                        listingForm.touched.items[index] &&
+                        listingForm.touched.items[index].title
+                          ? listingForm.errors.items[index].title
                           : null
                       }
                     />
@@ -219,15 +247,15 @@ function ListingDialog({
                       label="Description"
                       name={`items[${index}].description`}
                       value={item.description}
-                      onChange={newListingForm.handleChange}
+                      onChange={listingForm.handleChange}
                       helperText={
-                        newListingForm.errors.items &&
-                        newListingForm.errors.items[index] &&
-                        newListingForm.errors.items[index].description &&
-                        newListingForm.touched.items &&
-                        newListingForm.touched.items[index] &&
-                        newListingForm.touched.items[index].description
-                          ? newListingForm.errors.items[index].description
+                        listingForm.errors.items &&
+                        listingForm.errors.items[index] &&
+                        listingForm.errors.items[index].description &&
+                        listingForm.touched.items &&
+                        listingForm.touched.items[index] &&
+                        listingForm.touched.items[index].description
+                          ? listingForm.errors.items[index].description
                           : null
                       }
                     />
@@ -240,7 +268,7 @@ function ListingDialog({
                       label="Price"
                       name={`items[${index}].price`}
                       value={item.price}
-                      onChange={newListingForm.handleChange}
+                      onChange={listingForm.handleChange}
                       inputProps={{}}
                       InputProps={{
                         step: "0.01",
@@ -250,13 +278,13 @@ function ListingDialog({
                         ),
                       }}
                       helperText={
-                        newListingForm.errors.items &&
-                        newListingForm.errors.items[index] &&
-                        newListingForm.errors.items[index].price &&
-                        newListingForm.touched.items &&
-                        newListingForm.touched.items[index] &&
-                        newListingForm.touched.items[index].price
-                          ? newListingForm.errors.items[index].price
+                        listingForm.errors.items &&
+                        listingForm.errors.items[index] &&
+                        listingForm.errors.items[index].price &&
+                        listingForm.touched.items &&
+                        listingForm.touched.items[index] &&
+                        listingForm.touched.items[index].price
+                          ? listingForm.errors.items[index].price
                           : null
                       }
                     />
@@ -271,14 +299,14 @@ function ListingDialog({
                   variant="contained"
                   color="success"
                   onClick={() => {
-                    newListingForm.values.items.push({
+                    listingForm.values.items.push({
                       title: "",
                       description: "",
                       price: "",
                     });
-                    newListingForm.setFieldValue(
+                    listingForm.setFieldValue(
                       "items",
-                      newListingForm.values.items
+                      listingForm.values.items
                     );
                   }}
                 >
@@ -297,7 +325,7 @@ function ListingDialog({
             Cancel
           </Button>
           <Button variant="contained" color="success" type="submit">
-            Create
+            {listingId ? "Update" : "Create"}
           </Button>
         </DialogActions>
       </form>

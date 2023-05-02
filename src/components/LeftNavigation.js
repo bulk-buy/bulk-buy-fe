@@ -173,4 +173,5 @@ function LeftNavigation() {
   );
 }
 
+// export default LeftNavigation;
 export default withAuthenticator(LeftNavigation);

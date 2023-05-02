@@ -17,7 +17,6 @@ function Listings() {
   useEffect(() => {}, [listings]);
 
   useEffect(() => {
-    console.log(process.env.REACT_APP_BULKBUY_MS_API_URL);
     getTest().then((response) => {
       console.log(response);
     });

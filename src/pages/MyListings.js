@@ -7,6 +7,7 @@ import {
 } from "apis/endpoints/MyListingEndpoints";
 import ItemCard from "components/ItemCard";
 import ListingDialog from "components/ListingDialog";
+import moment from "moment";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
@@ -74,7 +75,7 @@ function MyListings() {
       <Grid item xs={12}>
         {myUpcomingListings.length ? (
           <Grid container spacing={2}>
-            {renderCards(myUpcomingListings)}
+            {renderCards(myUpcomingListings, true)}
           </Grid>
         ) : (
           <Typography variant="subtitle1">No upcoming listings</Typography>
