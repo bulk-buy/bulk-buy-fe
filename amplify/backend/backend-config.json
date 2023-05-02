@@ -1,6 +1,6 @@
 {
   "auth": {
-    "bulkbuyfe20b66d24": {
+    "bulkbuyfec66678dc": {
       "customAuth": false,
       "dependsOn": [],
       "providerPlugin": "awscloudformation",
@@ -9,35 +9,35 @@
     }
   },
   "parameters": {
-    "AMPLIFY_auth_bulkbuyfe20b66d24_nativeClientId": {
+    "AMPLIFY_auth_bulkbuyfec66678dc_nativeClientId": {
       "usedBy": [
         {
           "category": "auth",
-          "resourceName": "bulkbuyfe20b66d24"
+          "resourceName": "bulkbuyfec66678dc"
         }
       ]
     },
-    "AMPLIFY_auth_bulkbuyfe20b66d24_userPoolId": {
+    "AMPLIFY_auth_bulkbuyfec66678dc_userPoolId": {
       "usedBy": [
         {
           "category": "auth",
-          "resourceName": "bulkbuyfe20b66d24"
+          "resourceName": "bulkbuyfec66678dc"
         }
       ]
     },
-    "AMPLIFY_auth_bulkbuyfe20b66d24_userPoolName": {
+    "AMPLIFY_auth_bulkbuyfec66678dc_userPoolName": {
       "usedBy": [
         {
           "category": "auth",
-          "resourceName": "bulkbuyfe20b66d24"
+          "resourceName": "bulkbuyfec66678dc"
         }
       ]
     },
-    "AMPLIFY_auth_bulkbuyfe20b66d24_webClientId": {
+    "AMPLIFY_auth_bulkbuyfec66678dc_webClientId": {
       "usedBy": [
         {
           "category": "auth",
-          "resourceName": "bulkbuyfe20b66d24"
+          "resourceName": "bulkbuyfec66678dc"
         }
       ]
     }
