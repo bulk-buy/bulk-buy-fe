@@ -16,7 +16,7 @@ const components = {
 
 function App() {
   return (
-    // <Authenticator>
+    // <Authenticator socialProviders={["google"]}>
     <RouterProvider router={router}>
       <LeftNavigation />
     </RouterProvider>
@@ -24,5 +24,5 @@ function App() {
   );
 }
 
-export default App;
-// export default withAuthenticator(App, { components: components });
+// export default App;
+export default withAuthenticator(App, { components: components });

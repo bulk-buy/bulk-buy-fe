@@ -10,6 +10,16 @@
       "StackName": "amplify-bulkbuyfe-dev-94115",
       "StackId": "arn:aws:cloudformation:ap-southeast-1:695137441790:stack/amplify-bulkbuyfe-dev-94115/4674b960-de53-11ed-957a-0a6dc331856c",
       "AmplifyAppId": "d3cj9tqjeu9li6"
+    },
+    "categories": {
+      "auth": {
+        "bulkbuyfe20b66d24": {
+          "userPoolId": "ap-southeast-1_t6SRVZQSv",
+          "userPoolName": "BulkBuy",
+          "webClientId": "669bnemibm82p3jslvlvljitla",
+          "nativeClientId": "669bnemibm82p3jslvlvljitla"
+        }
+      }
     }
   }
 }
