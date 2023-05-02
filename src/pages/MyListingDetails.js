@@ -13,13 +13,16 @@ import {
   Typography,
 } from "@mui/material";
 import { getItem } from "apis/endpoints/ItemsEndpoints";
-import { getMyListing } from "apis/endpoints/MyListingEndpoints";
+import {
+  deleteMyListing,
+  getMyListing,
+} from "apis/endpoints/MyListingEndpoints";
 import { getOrder } from "apis/endpoints/OrdersEndpoints";
 import { getUser } from "apis/endpoints/UserEndpoints";
 import ListingDialog from "components/ListingDialog";
 import moment from "moment";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useParams, useNavigate } from "react-router";
 
 function NameContainer({ userId }) {
   const [user, setUser] = useState();
@@ -39,6 +42,7 @@ function NameContainer({ userId }) {
 
 function MyListingDetails() {
   const { listingId } = useParams();
+  const navigate = useNavigate();
 
   const [myListing, setMyListing] = useState();
   const [myListingItems, setMyListingItems] = useState([]);
@@ -160,6 +164,11 @@ function MyListingDetails() {
     setOpenDeleteListingDialog(true);
   };
 
+  const handleConfirmDeleteListing = () => {
+    deleteMyListing(listingId);
+    navigate("/my-listings");
+  };
+
   return (
     <Paper elevation={0}>
       {editable && (
@@ -188,7 +197,7 @@ function MyListingDetails() {
                 variant="contained"
                 color="error"
                 fullWidth
-                onClick={() => setOpenDeleteListingDialog(false)}
+                onClick={handleConfirmDeleteListing}
               >
                 Confirm Delete
               </Button>

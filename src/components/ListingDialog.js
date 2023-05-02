@@ -13,7 +13,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { getItems } from "apis/endpoints/ItemsEndpoints";
+import { getItems, deleteItem } from "apis/endpoints/ItemsEndpoints";
 import { getListing } from "apis/endpoints/ListingEndpoints";
 import { CategoriesTesting } from "constants/CategoriesTesting";
 import { useFormik } from "formik";
@@ -44,7 +44,6 @@ function ListingDialog({
 
   useEffect(() => {
     if (listingId) {
-      let listing = {};
       getListing(listingId).then((listing) => {
         console.log(listing);
         setListing(listing);
@@ -212,6 +211,9 @@ function ListingDialog({
                           "items",
                           listingForm.values.items
                         );
+                        if (item.id) {
+                          deleteItem(item.id);
+                        }
                       }}
                     >
                       <Delete />
