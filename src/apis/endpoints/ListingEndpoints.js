@@ -56,3 +56,19 @@ export const getListing = (listingId) => {
     });
   });
 };
+
+export const getRecommendedListings = () => {
+  return new Promise((resolve, reject) => {
+    // BulkBuyMS.get("/listings/recommended")
+    //   .then((response) => {
+    //     resolve(response.data);
+    //   })
+    //   .catch((error) => {
+    //     console.error(error);
+    //     reject(error);
+    //   });
+    let listings = [];
+    listings.push(ListingsTesting[3]);
+    resolve(listings);
+  });
+};

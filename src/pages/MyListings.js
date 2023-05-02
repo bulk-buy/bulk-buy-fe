@@ -1,22 +1,12 @@
 import { Add } from "@mui/icons-material";
-import {
-  Button,
-  Card,
-  CardActionArea,
-  CardContent,
-  CardMedia,
-  Divider,
-  Grid,
-  Paper,
-  Typography,
-} from "@mui/material";
+import { Button, Divider, Grid, Paper, Typography } from "@mui/material";
 import {
   getMyActiveListings,
   getMyCompletedListings,
   getMyUpcomingListings,
 } from "apis/endpoints/MyListingEndpoints";
-import CreateNewListingDialog from "components/CreateNewListingDialog";
 import ItemCard from "components/ItemCard";
+import ListingDialog from "components/ListingDialog";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
@@ -122,7 +112,7 @@ function MyListings() {
             Create New Listing
           </Button>
         </Grid>
-        <CreateNewListingDialog
+        <ListingDialog
           openNewListingDialog={openNewListingDialog}
           setOpenNewListingDialog={setOpenNewListingDialog}
         />

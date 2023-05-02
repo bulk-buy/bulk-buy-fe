@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const BulkBuyMS = axios.create({
-  baseURL: "http://localhost:3001",
+  baseURL: process.env.REACT_APP_BULKBUY_MS_API_URL,
   withCredentials: true,
 });
 
