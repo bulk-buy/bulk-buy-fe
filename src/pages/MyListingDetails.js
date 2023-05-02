@@ -31,7 +31,7 @@ function NameContainer({ userId }) {
   );
 }
 
-function MyListingDetails() {
+function MyListingDetails({ editable }) {
   const { listingId } = useParams();
 
   const [myListing, setMyListing] = useState();

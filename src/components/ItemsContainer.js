@@ -3,7 +3,6 @@ import React from "react";
 import Item from "./Item";
 
 function ItemsContainer({ itemIdList }) {
-  console.log(itemIdList);
   return (
     <Grid container spacing={2}>
       {itemIdList.map((itemId) => (

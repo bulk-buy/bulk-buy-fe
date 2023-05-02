@@ -1,24 +1,40 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { UsersTesting } from "constants/UsersTesting";
 
 const initialState = {
-  user: {},
+  cognito: {},
+  user: {
+    ...UsersTesting[0],
+  },
 };
 
 export const userInfoSlice = createSlice({
   name: "userInfo",
   initialState,
   reducers: {
-    setUserInfo: (state, action) => {
-      state = action.payload;
+    getCognitoInfo: (state) => {
+      return state.cognito;
+    },
+    setCognitoInfo: (state, action) => {
+      let newState = { ...state };
+      newState.cognito = action.payload;
+      return newState;
     },
     getUserInfo: (state) => {
-      return state;
+      return state.user;
+    },
+    setUserInfo: (state, action) => {
+      let newState = { ...state };
+      newState.user = action.payload;
+      return newState;
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setUserInfo } = userInfoSlice.actions;
-export const { getUserInfo } = userInfoSlice.actions;
+/* Getters */
+export const { getCognitoInfo, getUserInfo } = userInfoSlice.actions;
+/* Setters */
+export const { setCognitoInfo, setUserInfo } = userInfoSlice.actions;
 
 export default userInfoSlice.reducer;

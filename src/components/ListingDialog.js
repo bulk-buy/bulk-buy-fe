@@ -13,15 +13,41 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { getListing } from "apis/endpoints/ListingEndpoints";
 import { CategoriesTesting } from "constants/CategoriesTesting";
 import { useFormik } from "formik";
 import moment from "moment";
+import { useEffect, useState } from "react";
 import * as Yup from "yup";
 
-function CreateNewListingDialog({
+function ListingDialog({
   openNewListingDialog,
   setOpenNewListingDialog,
+  listingId,
 }) {
+  const [listing, setListing] = useState({
+    title: "",
+    description: "",
+    category: "",
+    startDate: moment(new Date()).format("YYYY-MM-DD"),
+    endDate: moment(new Date()).format("YYYY-MM-DD"),
+    items: [
+      {
+        title: "",
+        description: "",
+        price: "",
+      },
+    ],
+  });
+
+  useEffect(() => {
+    if (listingId) {
+      getListing(listingId).then((response) => {
+        setListing(response);
+      });
+    }
+  }, [listingId]);
+
   const newListingValidation = Yup.object().shape({
     title: Yup.string().required("Title is required"),
     description: Yup.string().required("Description is required"),
@@ -38,24 +64,12 @@ function CreateNewListingDialog({
   });
 
   const newListingForm = useFormik({
-    initialValues: {
-      title: "",
-      description: "",
-      category: "",
-      startDate: moment(new Date()).format("YYYY-MM-DD"),
-      endDate: moment(new Date()).format("YYYY-MM-DD"),
-      items: [
-        {
-          title: "",
-          description: "",
-          price: "",
-        },
-      ],
-    },
+    initialValues: listing,
     onSubmit: (values) => {
       console.log(values);
     },
     validationSchema: newListingValidation,
+    enableReinitialize: true,
   });
 
   return (
@@ -291,4 +305,4 @@ function CreateNewListingDialog({
   );
 }
 
-export default CreateNewListingDialog;
+export default ListingDialog;

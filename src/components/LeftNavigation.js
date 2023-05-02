@@ -17,8 +17,10 @@ import {
 } from "@mui/material";
 import { styled, useTheme } from "@mui/material/styles";
 import { NavigationList } from "constants/LeftNavigationConsts";
-import * as React from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { Outlet, useNavigate } from "react-router-dom";
+import { setCognitoInfo } from "store/userInfoSlice";
 
 const drawerWidth = 240;
 
@@ -68,11 +70,16 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 }));
 
 function LeftNavigation() {
-  const { signOut } = useAuthenticator();
+  const { user, signOut } = useAuthenticator();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const theme = useTheme();
 
   const [open, setOpen] = React.useState(true);
+
+  useEffect(() => {
+    dispatch(setCognitoInfo(user));
+  }, [user, dispatch]);
 
   const handleDrawerOpen = () => {
     setOpen(true);
