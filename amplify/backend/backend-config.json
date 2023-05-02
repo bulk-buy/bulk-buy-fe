@@ -1,28 +1,45 @@
 {
   "auth": {
-    "bulkbuyfe7544ff18": {
+    "bulkbuyfe20b66d24": {
       "customAuth": false,
       "dependsOn": [],
-      "frontendAuthConfig": {
-        "mfaConfiguration": "OFF",
-        "mfaTypes": [
-          "SMS"
-        ],
-        "passwordProtectionSettings": {
-          "passwordPolicyCharacters": [],
-          "passwordPolicyMinLength": 8
-        },
-        "signupAttributes": [
-          "EMAIL"
-        ],
-        "socialProviders": [],
-        "usernameAttributes": [],
-        "verificationMechanisms": [
-          "EMAIL"
-        ]
-      },
       "providerPlugin": "awscloudformation",
-      "service": "Cognito"
+      "service": "Cognito",
+      "serviceType": "imported"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_auth_bulkbuyfe20b66d24_nativeClientId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "bulkbuyfe20b66d24"
+        }
+      ]
+    },
+    "AMPLIFY_auth_bulkbuyfe20b66d24_userPoolId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "bulkbuyfe20b66d24"
+        }
+      ]
+    },
+    "AMPLIFY_auth_bulkbuyfe20b66d24_userPoolName": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "bulkbuyfe20b66d24"
+        }
+      ]
+    },
+    "AMPLIFY_auth_bulkbuyfe20b66d24_webClientId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "bulkbuyfe20b66d24"
+        }
+      ]
     }
   }
 }

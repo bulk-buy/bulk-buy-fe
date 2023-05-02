@@ -16,12 +16,13 @@ const components = {
 
 function App() {
   return (
-    <Authenticator>
-      <RouterProvider router={router}>
-        <LeftNavigation />
-      </RouterProvider>
-    </Authenticator>
+    // <Authenticator socialProviders={["google"]}>
+    <RouterProvider router={router}>
+      <LeftNavigation />
+    </RouterProvider>
+    // </Authenticator>
   );
 }
 
+// export default App;
 export default withAuthenticator(App, { components: components });

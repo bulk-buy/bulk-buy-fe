@@ -11,13 +11,28 @@ export const getItems = (listingId) => {
     //     console.error(error);
     //     reject(error);
     //   });
-    resolve(ItemsTesting.filter((item) => item.listingId == listingId));
+    resolve(ItemsTesting.filter((item) => item.listing.id == listingId));
   });
 };
 
 export const getItem = (itemId) => {
   return new Promise((resolve, reject) => {
     // BulkBuyMS.get(`/items/${itemId}`)
+    //   .then((response) => {
+    //     resolve(response.data);
+    //   })
+    //   .catch((error) => {
+    //     console.error(error);
+    //     reject(error);
+    //   });
+    resolve(ItemsTesting.find((item) => item.id == itemId));
+  });
+};
+
+export const deleteItem = (itemId) => {
+  console.log("deleteItem" + itemId);
+  return new Promise((resolve, reject) => {
+    // BulkBuyMS.delete(`/items/${itemId}`)
     //   .then((response) => {
     //     resolve(response.data);
     //   })

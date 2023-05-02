@@ -13,7 +13,12 @@
     },
     "categories": {
       "auth": {
-        "bulkbuyfe7544ff18": {}
+        "bulkbuyfe20b66d24": {
+          "userPoolId": "ap-southeast-1_t6SRVZQSv",
+          "userPoolName": "BulkBuy",
+          "webClientId": "669bnemibm82p3jslvlvljitla",
+          "nativeClientId": "669bnemibm82p3jslvlvljitla"
+        }
       }
     }
   }

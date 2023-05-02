@@ -66,3 +66,18 @@ export const getMyListing = (listingId) => {
     resolve(listing);
   });
 };
+
+export const deleteMyListing = (listingId) => {
+  console.log("deleteMyListing" + listingId);
+  return new Promise((resolve, reject) => {
+    // BulkBuyMS.delete(`/my-listings/${listingId}`)
+    //   .then((response) => {
+    //     resolve(response.data);
+    //   })
+    //   .catch((error) => {
+    //     console.error(error);
+    //     reject(error);
+    //   });
+    resolve(MyActiveListingsTesting.find((listing) => listing.id == listingId));
+  });
+};

@@ -2,6 +2,8 @@ import { Save } from "@mui/icons-material";
 import { Button, Grid, Paper, TextField } from "@mui/material";
 import { useFormik } from "formik";
 import { MuiTelInput } from "mui-tel-input";
+import { useSelector } from "react-redux";
+import { getUserInfo } from "store/userInfoSlice";
 import * as Yup from "yup";
 
 const profileValidation = Yup.object().shape({
@@ -30,11 +32,14 @@ const profileValidation = Yup.object().shape({
 });
 
 function Profile() {
+  const userInfo = useSelector((state) => state.userInfo.user);
+
   const profileForm = useFormik({
     initialValues: {
       firstName: "",
       lastName: "",
       phone: "+65",
+      email: userInfo.attributes.email,
       streetName: "",
       block: "",
       unit: "",
@@ -103,6 +108,17 @@ function Profile() {
                   ? profileForm.errors.phone
                   : null
               }
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              required
+              label="Email"
+              name="email"
+              type="email"
+              disabled
+              value={profileForm.values.email}
             />
           </Grid>
           <Grid item xs={12}>

@@ -81,7 +81,6 @@ function MyOrderDetails() {
     </Accordion>
   );
 
-  console.log(order);
   const renderOrders = () => (
     <Accordion defaultExpanded elevation={0}>
       <AccordionSummary expandIcon={<ExpandMore />}>
