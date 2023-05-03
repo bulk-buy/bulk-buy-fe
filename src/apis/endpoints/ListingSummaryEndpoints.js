@@ -10,6 +10,6 @@ export const getListingSummary = (listingId) => {
     //     console.error(error);
     //     reject(error);
     // //   });
-    resolve(ListingsTesting.find((listing) => listing.id == listingId));
+    resolve(ListingsTesting.find((listing) => listing._id == listingId));
   });
 };

@@ -1,9 +1,11 @@
-import BulkBuyMS from "apis/BulkBuyMS";
+import OrderMS from "apis/OrderMS";
 import moment from "moment";
 
-export const getMyActiveOrders = () => {
+export const getMyActiveOrders = (userIdObj) => {
+  let encodedUserId = encodeURIComponent(JSON.stringify({ userId: userIdObj }));
+  console.log(encodedUserId);
   return new Promise((resolve, reject) => {
-    BulkBuyMS.get("/orders")
+    OrderMS.get(`/orders/${encodedUserId}`)
       .then((response) => {
         let orders = response.data;
         orders.forEach((order, index) => {
@@ -28,9 +30,11 @@ export const getMyActiveOrders = () => {
   });
 };
 
-export const getMyCompletedOrders = () => {
+export const getMyCompletedOrders = (userId) => {
+  let encodedUserId = encodeURIComponent(JSON.stringify({ userId: userId }));
+
   return new Promise((resolve, reject) => {
-    BulkBuyMS.get("/orders")
+    OrderMS.get(`/orders/${encodedUserId}}`)
       .then((response) => {
         let orders = response.data;
         orders.forEach((order, index) => {

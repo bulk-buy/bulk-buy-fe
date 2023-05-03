@@ -1,10 +1,9 @@
-import BulkBuyMS from "apis/BulkBuyMS";
-import { ListingsTesting } from "constants/ListingsTesting";
+import ListingMS from "apis/ListingMS";
 import moment from "moment";
 
 export const getListings = () => {
   return new Promise((resolve, reject) => {
-    BulkBuyMS.get("/listings")
+    ListingMS.get("/listings")
       .then((response) => {
         let listings = response.data;
         resolve(
@@ -22,7 +21,7 @@ export const getListings = () => {
 
 export const getListing = (listingId) => {
   return new Promise((resolve, reject) => {
-    BulkBuyMS.get(`/listings/${listingId}`)
+    ListingMS.get(`/listings/${listingId}`)
       .then((response) => {
         resolve(response.data);
       })
@@ -35,23 +34,20 @@ export const getListing = (listingId) => {
 
 export const getRecommendedListings = () => {
   return new Promise((resolve, reject) => {
-    // BulkBuyMS.get("/listings/recommended")
-    //   .then((response) => {
-    //     resolve(response.data);
-    //   })
-    //   .catch((error) => {
-    //     console.error(error);
-    //     reject(error);
-    //   });
-    let listings = [];
-    listings.push(ListingsTesting[3]);
-    resolve(listings);
+    ListingMS.get("/listings")
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+        reject(error);
+      });
   });
 };
 
 export const patchListing = (listingId, listing) => {
   return new Promise((resolve, reject) => {
-    BulkBuyMS.patch(`/listings/${listingId}`, listing)
+    ListingMS.patch(`/listings/${listingId}`, listing)
       .then((response) => {
         resolve(response.data);
       })
@@ -63,8 +59,9 @@ export const patchListing = (listingId, listing) => {
 };
 
 export const postListing = (listing) => {
+  console.log(listing);
   return new Promise((resolve, reject) => {
-    BulkBuyMS.post("/listings", listing)
+    ListingMS.post("/listings", listing)
       .then((response) => {
         resolve(response.data);
       })

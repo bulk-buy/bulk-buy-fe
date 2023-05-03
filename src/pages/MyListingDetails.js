@@ -12,16 +12,17 @@ import {
   Paper,
   Typography,
 } from "@mui/material";
-import { getItem } from "apis/endpoints/ItemsEndpoints";
+import { getItem, getItemsByListingId } from "apis/endpoints/ItemsEndpoints";
 import {
   deleteMyListing,
   getMyListing,
 } from "apis/endpoints/MyListingEndpoints";
-import { getOrder } from "apis/endpoints/OrdersEndpoints";
+import { getOrder, getOrdersByListingId } from "apis/endpoints/OrdersEndpoints";
 import { getUser } from "apis/endpoints/UserEndpoints";
 import ListingDialog from "components/ListingDialog";
 import moment from "moment";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router";
 
 function NameContainer({ userId }) {
@@ -43,6 +44,7 @@ function NameContainer({ userId }) {
 function MyListingDetails() {
   const { listingId } = useParams();
   const navigate = useNavigate();
+  const userInfo = useSelector((state) => state.userInfo.user);
 
   const [myListing, setMyListing] = useState();
   const [myListingItems, setMyListingItems] = useState([]);
@@ -51,42 +53,48 @@ function MyListingDetails() {
   const [openEditListingDialog, setOpenEditListingDialog] = useState(false);
   const [openDeleteListingDialog, setOpenDeleteListingDialog] = useState(false);
 
+  const [v, setV] = useState(0);
+
   /* Fetch my listing details */
   useEffect(() => {
     getMyListing(listingId).then((listing) => {
+      console.log(listing);
+      listing.__v && setV(listing.__v);
       setMyListing(listing);
       setEditable(moment().isBefore(listing?.startDate));
     });
-  }, [listingId]);
+  }, [listingId, userInfo.email]);
 
   /* Fetch my listing items */
   useEffect(() => {
-    myListing?.items?.forEach((item) => {
-      getItem(item.id).then((item) => {
-        let itemIndex = myListingItems.findIndex(
-          (myListingItem) => myListingItem.id == item.id
-        );
-        if (itemIndex != -1) {
-          setMyListingItems((items) => {
-            items[itemIndex] = item;
-            return items;
-          });
-        } else {
-          setMyListingItems((items) => [...items, item]);
-        }
+    getItemsByListingId(listingId).then((items) => {
+      console.log(items);
+      items.__v && setV(items.__v);
+      items.forEach((item, index) => {
+        getItem(item._id).then((item) => {
+          item.__v && setV(item.__v);
+          item[index] = item;
+        });
       });
+      setMyListingItems(items);
     });
-  }, [myListing?.items, myListingItems]);
+  }, [listingId]);
 
   /* Fetch my listing orders */
   useEffect(() => {
-    myListing?.orders?.forEach((order) => {
-      getOrder(order.id).then((order) => {
-        setMyListingOrders((orders) => [...orders, order]);
+    getOrdersByListingId(listingId).then((orders) => {
+      orders.__v && setV(orders.__v);
+      orders.forEach((order) => {
+        getOrder(order._id).then((order) => {
+          console.log(order);
+          order.__v && setV(order.__v);
+          setMyListingOrders((orders) => [...orders, order]);
+        });
       });
     });
-  }, [myListing?.orders]);
+  }, [listingId]);
 
+  console.log(v);
   const renderListing = () => (
     <Grid item xs={12}>
       <Typography variant="h1" gutterBottom component="div">
@@ -108,7 +116,7 @@ function MyListingDetails() {
       <AccordionDetails>
         <Grid container spacing={2}>
           {myListingItems?.map((item) => (
-            <Grid item container spacing={2} key={item.id}>
+            <Grid item container spacing={2} key={item._id}>
               <Grid item xs={9}>
                 <Typography variant="h5" gutterBottom component="div">
                   {item.title}
@@ -134,18 +142,18 @@ function MyListingDetails() {
       <AccordionDetails>
         <Grid container spacing={2}>
           {myListingOrders?.map((order) => (
-            <Grid item xs={12} key={order.id}>
+            <Grid item xs={12} key={order._id}>
               <Typography variant="h5" gutterBottom component="div">
-                <NameContainer userId={order.user.id} />
+                <NameContainer userId={order.user._id} />
               </Typography>
               {order.items.map((item) => (
                 <Typography
                   variant="subtitle1"
                   gutterBottom
                   component="div"
-                  key={item.id}
+                  key={item._id}
                 >
-                  {myListingItems?.find((i) => i.id == item.id)?.title} x{" "}
+                  {myListingItems?.find((i) => i._id == item._id)?.title} x{" "}
                   {item.quantity}
                 </Typography>
               ))}
@@ -165,7 +173,9 @@ function MyListingDetails() {
   };
 
   const handleConfirmDeleteListing = () => {
-    deleteMyListing(listingId);
+    deleteMyListing(listingId, v).then((response) => {
+      v = response.__v;
+    });
     navigate("/my-listings");
   };
 
@@ -210,7 +220,6 @@ function MyListingDetails() {
         sx={{
           height: 200,
         }}
-        alt={`${myListing?.category.name}`}
         src="/images/trolley512.png"
       />
       <Grid container spacing={2}>

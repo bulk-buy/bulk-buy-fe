@@ -1,21 +1,15 @@
-import BulkBuyMS from "apis/BulkBuyMS";
-import {
-  MyActiveListingsTesting,
-  MyCompletedListingsTesting,
-  MyUpcomingListingsTesting,
-} from "constants/MyListingsTesting";
+import ListingMS from "apis/ListingMS";
 import moment from "moment";
 
-export const getMyActiveListings = () => {
+export const getMyActiveListings = (userId) => {
+  let encodedUserId = encodeURIComponent(
+    JSON.stringify({ postedBy: userId, deletedAt: "" })
+  );
+
   return new Promise((resolve, reject) => {
-    BulkBuyMS.get("/listings")
+    ListingMS.get(`/listings/${encodedUserId}}`)
       .then((response) => {
         let listings = response.data;
-        listings.forEach((listing, index) => {
-          if (listing.postedBy != 1) {
-            listings.splice(index, 1);
-          }
-        });
         listings.forEach((listing, index) => {
           if (
             moment(listing.startDate).isAfter(moment(new Date())) ||
@@ -34,16 +28,16 @@ export const getMyActiveListings = () => {
   });
 };
 
-export const getMyUpcomingListings = () => {
+export const getMyUpcomingListings = (userId) => {
+  let encodedUserId = encodeURIComponent(
+    JSON.stringify({ postedBy: userId, deletedAt: "" })
+  );
+
   return new Promise((resolve, reject) => {
-    BulkBuyMS.get("/listings")
+    ListingMS.get(`/listings/${encodedUserId}`)
       .then((response) => {
         let listings = response.data;
-        listings.forEach((listing, index) => {
-          if (listing.postedBy != 1) {
-            listings.splice(index, 1);
-          }
-        });
+        console.log(listings);
         listings.forEach((listing, index) => {
           if (!moment(listing.startDate).isAfter(moment(new Date()))) {
             listings.splice(index, 1);
@@ -59,16 +53,15 @@ export const getMyUpcomingListings = () => {
   });
 };
 
-export const getMyCompletedListings = () => {
+export const getMyCompletedListings = (userId) => {
+  let encodedUserId = encodeURIComponent(
+    JSON.stringify({ postedBy: userId, deletedAt: "" })
+  );
+
   return new Promise((resolve, reject) => {
-    BulkBuyMS.get("/listings")
+    ListingMS.get(`/listings/${encodedUserId}`)
       .then((response) => {
         let listings = response.data;
-        listings.forEach((listing, index) => {
-          if (listing.postedBy != 1) {
-            listings.splice(index, 1);
-          }
-        });
         listings.forEach((listing, index) => {
           if (!moment(listing.endDate).isBefore(moment(new Date()))) {
             listings.splice(index, 1);
@@ -86,13 +79,9 @@ export const getMyCompletedListings = () => {
 
 export const getMyListing = (listingId) => {
   return new Promise((resolve, reject) => {
-    BulkBuyMS.get(`/listings/${listingId}`)
+    ListingMS.get(`/listings/${listingId}`)
       .then((response) => {
-        let listing = response.data;
-        if (listing.postedBy != 1) {
-          listing = null;
-        }
-        resolve(listing);
+        resolve(response.data);
       })
       .catch((error) => {
         console.error(error);
@@ -103,7 +92,7 @@ export const getMyListing = (listingId) => {
 
 export const patchMyListing = (listingId, listing) => {
   return new Promise((resolve, reject) => {
-    BulkBuyMS.patch(`/listings/${listingId}`, listing)
+    ListingMS.patch(`/listings/${listingId}`, listing)
       .then((response) => {
         resolve(response.data);
       })
@@ -114,9 +103,9 @@ export const patchMyListing = (listingId, listing) => {
   });
 };
 
-export const deleteMyListing = (listingId) => {
+export const deleteMyListing = (listingId, v) => {
   return new Promise((resolve, reject) => {
-    BulkBuyMS.delete(`/listings/${listingId}`)
+    ListingMS.delete(`/listings/${listingId}`, { data: { __v: v } })
       .then((response) => {
         resolve(response.data);
       })
@@ -124,6 +113,5 @@ export const deleteMyListing = (listingId) => {
         console.error(error);
         reject(error);
       });
-    // resolve(MyActiveListingsTesting.find((listing) => listing.id == listingId));
   });
 };

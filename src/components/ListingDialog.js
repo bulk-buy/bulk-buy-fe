@@ -13,12 +13,23 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { getItems, deleteItem } from "apis/endpoints/ItemsEndpoints";
-import { getListing } from "apis/endpoints/ListingEndpoints";
-import { CategoriesTesting } from "constants/CategoriesTesting";
+import { getCategory } from "apis/endpoints/CategoriesEndpoints";
+import { getCategories } from "apis/endpoints/CategoriesEndpoints";
+import {
+  deleteItem,
+  getItemsByListingId,
+  patchItem,
+  postItem,
+} from "apis/endpoints/ItemsEndpoints";
+import {
+  getListing,
+  patchListing,
+  postListing,
+} from "apis/endpoints/ListingEndpoints";
 import { useFormik } from "formik";
 import moment from "moment";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import * as Yup from "yup";
 
 function ListingDialog({
@@ -26,10 +37,16 @@ function ListingDialog({
   setOpenNewListingDialog,
   listingId,
 }) {
+  const userInfo = useSelector((state) => state.userInfo.user);
+
+  const [categories, setCategories] = useState([]);
+  const [v, setV] = useState(0);
+
   const [listing, setListing] = useState({
     title: "",
     description: "",
-    category: "",
+    categoryId: "",
+    postedBy: "",
     startDate: moment(new Date()).format("YYYY-MM-DD"),
     endDate: moment(new Date()).format("YYYY-MM-DD"),
     minRequired: 0,
@@ -43,12 +60,29 @@ function ListingDialog({
   });
 
   useEffect(() => {
+    getCategories().then((categories) => {
+      categories.__v && setV(categories.__v);
+      setCategories(categories);
+    });
+  }, []);
+
+  console.log(listing);
+  useEffect(() => {
     if (listingId) {
-      getListing(listingId).then((listing) => {
-        setListing(listing);
-        getItems(listingId).then((items) => {
-          setListing({ ...listing, items: items });
-        });
+      getListing(listingId).then((listingResponse) => {
+        listingResponse.__v && setV(listingResponse.__v);
+        listingResponse.startDate = moment(listingResponse.startDate).format(
+          "YYYY-MM-DD"
+        );
+        listingResponse.endDate = moment(listingResponse.endDate).format(
+          "YYYY-MM-DD"
+        );
+        setListing((listing) => ({ ...listing, ...listingResponse }));
+      });
+      getItemsByListingId(listingId).then((items) => {
+        console.log(items);
+        items.__v && setV(items.__v);
+        setListing((listing) => ({ ...listing, items: items }));
       });
     }
   }, [listingId]);
@@ -56,7 +90,7 @@ function ListingDialog({
   const newListingValidation = Yup.object().shape({
     title: Yup.string().required("Title is required"),
     description: Yup.string().required("Description is required"),
-    category: Yup.string().required("Category is required"),
+    categoryId: Yup.string().required("Category is required"),
     startDate: Yup.date().required("Start Date is required"),
     endDate: Yup.date().required("End Date is required"),
     minRequired: Yup.number().required("Minimum Required is required"),
@@ -71,15 +105,51 @@ function ListingDialog({
     ),
   });
 
+  const submitListing = (values) => {
+    values = { ...values, __v: v };
+    if (listingId) {
+      patchListing(listingId, values).then((response) => {
+        response.__v && setV(response.__v);
+        values.items.forEach((item) => {
+          item = { ...item, listingId: listingId, __v: v };
+          if (item._id) {
+            patchItem(item._id, item).then((response) => {
+              response.__v && setV(response.__v);
+            });
+          } else {
+            postItem(item).then((response) => {
+              response.__v && setV(response.__v);
+            });
+          }
+        });
+        setOpenNewListingDialog(false);
+      });
+    } else {
+      values.postedBy = userInfo._id;
+      postListing(values).then((response) => {
+        let listingId = response._id;
+        response.__v && setV(response.__v);
+        values.items.forEach((item) => {
+          item = { ...item, listingId: listingId, __v: v };
+          postItem(item).then((response) => {
+            response.__v && setV(response.__v);
+          });
+        });
+        setOpenNewListingDialog(false);
+      });
+    }
+  };
+
   const listingForm = useFormik({
     initialValues: listing,
     onSubmit: (values) => {
-      console.log(values);
+      submitListing(values);
     },
     validationSchema: newListingValidation,
     enableReinitialize: true,
   });
 
+  console.log(listingForm.values);
   return (
     <Dialog
       open={openNewListingDialog}
@@ -130,8 +200,8 @@ function ListingDialog({
                 required
                 select
                 label="Category"
-                name="category"
-                value={listingForm.values.category}
+                name="categoryId"
+                value={listingForm.values.categoryId}
                 onChange={listingForm.handleChange}
                 helperText={
                   listingForm.errors.category && listingForm.touched.category
@@ -139,8 +209,8 @@ function ListingDialog({
                     : null
                 }
               >
-                {CategoriesTesting.map((category) => (
-                  <MenuItem key={category.id} value={category.id}>
+                {categories.map((category) => (
+                  <MenuItem key={category._id} value={category._id}>
                     {category.name}
                   </MenuItem>
                 ))}
@@ -210,8 +280,15 @@ function ListingDialog({
                           "items",
                           listingForm.values.items
                         );
-                        if (item.id) {
-                          deleteItem(item.id);
+                        if (item._id) {
+                          let itemObj = {
+                            ...item,
+                            listingId: listingId,
+                            __v: v,
+                          };
+                          deleteItem(item._id, itemObj).then((response) => {
+                            response.__v && setV(response.__v);
+                          });
                         }
                       }}
                     >

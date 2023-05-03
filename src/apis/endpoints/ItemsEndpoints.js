@@ -1,8 +1,9 @@
 import BulkBuyMS from "apis/BulkBuyMS";
+import ItemMS from "apis/ItemMS";
 
 export const getItems = (listingId) => {
   return new Promise((resolve, reject) => {
-    BulkBuyMS.get(`/listings/${listingId}`)
+    ItemMS.get(`/listings/${listingId}`)
       .then((response) => {
         resolve(response.data);
       })
@@ -15,7 +16,23 @@ export const getItems = (listingId) => {
 
 export const getItem = (itemId) => {
   return new Promise((resolve, reject) => {
-    BulkBuyMS.get(`/items/${itemId}`)
+    ItemMS.get(`/items/${itemId}`)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+        reject(error);
+      });
+  });
+};
+
+export const getItemsByListingId = (listingId) => {
+  let encodedListingId = encodeURIComponent(
+    JSON.stringify({ listingId: listingId })
+  );
+  return new Promise((resolve, reject) => {
+    ItemMS.get(`/items/${encodedListingId}`)
       .then((response) => {
         resolve(response.data);
       })
@@ -28,7 +45,7 @@ export const getItem = (itemId) => {
 
 export const patchItem = (itemId, item) => {
   return new Promise((resolve, reject) => {
-    BulkBuyMS.patch(`/items/${itemId}`, item)
+    ItemMS.patch(`/items/${itemId}`, item)
       .then((response) => {
         resolve(response.data);
       })
@@ -41,7 +58,7 @@ export const patchItem = (itemId, item) => {
 
 export const postItem = (item) => {
   return new Promise((resolve, reject) => {
-    BulkBuyMS.post("/items", item)
+    ItemMS.post("/items", item)
       .then((response) => {
         resolve(response.data);
       })
@@ -54,7 +71,7 @@ export const postItem = (item) => {
 
 export const deleteItem = (itemId) => {
   return new Promise((resolve, reject) => {
-    BulkBuyMS.delete(`/items/${itemId}`)
+    ItemMS.delete(`/items/${itemId}`)
       .then((response) => {
         resolve(response.data);
       })

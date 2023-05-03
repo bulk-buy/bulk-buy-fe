@@ -3,7 +3,7 @@ import React from "react";
 
 function Item({ itemId }) {
   return (
-    <Grid item xs={12} key={itemId.id}>
+    <Grid item xs={12} key={itemId._id}>
       <Typography variant="h5" gutterBottom component="div">
         {itemId.title}
       </Typography>

@@ -7,43 +7,38 @@ import {
 } from "apis/endpoints/MyListingEndpoints";
 import ItemCard from "components/ItemCard";
 import ListingDialog from "components/ListingDialog";
-import moment from "moment";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 
 function MyListings() {
   const navigate = useNavigate();
+  const userInfo = useSelector((state) => state.userInfo.user);
 
   const [myActiveListings, setMyActiveListings] = useState([]);
   const [myUpcomingListings, setMyUpcomingListings] = useState([]);
   const [myCompletedListings, setMyCompletedListings] = useState([]);
   const [openNewListingDialog, setOpenNewListingDialog] = useState(false);
 
-  useEffect(() => {}, [
-    myActiveListings,
-    myUpcomingListings,
-    myCompletedListings,
-  ]);
-
   useEffect(() => {
-    getMyActiveListings().then((response) => {
+    getMyActiveListings(userInfo._id).then((response) => {
       setMyActiveListings(response);
     });
-    getMyUpcomingListings().then((response) => {
+    getMyUpcomingListings(userInfo._id).then((response) => {
       setMyUpcomingListings(response);
     });
-    getMyCompletedListings().then((response) => {
+    getMyCompletedListings(userInfo._id).then((response) => {
       setMyCompletedListings(response);
     });
-  }, []);
+  }, [userInfo]);
 
   const renderCards = (listings) => {
     return listings.map((listing) => (
-      <Grid item xs={12} sm={6} md={4} lg={3} key={listing.id}>
+      <Grid item xs={12} sm={6} md={4} lg={3} key={listing._id}>
         <ItemCard
-          listingId={listing.id}
+          listingId={listing._id}
           onClick={() => {
-            navigate(`/my-listings/${listing.id}`);
+            navigate(`/my-listings/${listing._id}`);
           }}
         />
       </Grid>

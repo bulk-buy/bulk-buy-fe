@@ -1,11 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { UsersTesting } from "constants/UsersTesting";
 
 const initialState = {
   cognito: {},
-  user: {
-    ...UsersTesting[0],
-  },
+  user: {},
 };
 
 export const userInfoSlice = createSlice({

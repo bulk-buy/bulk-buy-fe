@@ -1,10 +1,9 @@
-import BulkBuyMS from "apis/BulkBuyMS";
+import OrderMS from "apis/OrderMS";
 import { ListingsTesting } from "constants/ListingsTesting";
-import { OrdersTesting } from "constants/OrdersTesting";
 
 export const getOrder = (orderId) => {
   return new Promise((resolve, reject) => {
-    BulkBuyMS.get("/orders/:orderId")
+    OrderMS.get("/orders/:orderId")
       .then((response) => {
         resolve(response.data);
       })
@@ -12,13 +11,13 @@ export const getOrder = (orderId) => {
         console.error(error);
         reject(error);
       });
-    // resolve(OrdersTesting.find((order) => order.id == orderId));
+    // resolve(OrdersTesting.find((order) => order._id == orderId));
   });
 };
 
 export const getOrders = (listingId) => {
   return new Promise((resolve, reject) => {
-    BulkBuyMS.get(`/orders`)
+    OrderMS.get(`/orders`)
       .then((response) => {
         let orders = response.data;
         resolve(orders.filter((order) => order.listingId == listingId));
@@ -27,6 +26,36 @@ export const getOrders = (listingId) => {
         console.error(error);
         reject(error);
       });
-    resolve(ListingsTesting.find((listing) => listing.id == listingId).orders);
+    resolve(ListingsTesting.find((listing) => listing._id == listingId).orders);
+  });
+};
+
+export const getOrdersByListingId = (listingId) => {
+  let encodedListingId = encodeURIComponent(
+    JSON.stringify({ listingId: listingId })
+  );
+
+  return new Promise((resolve, reject) => {
+    OrderMS.get(`/orders/${encodedListingId}`)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+        reject(error);
+      });
+  });
+};
+
+export const postOrder = (order) => {
+  return new Promise((resolve, reject) => {
+    OrderMS.post("/orders", order)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+        reject(error);
+      });
   });
 };
