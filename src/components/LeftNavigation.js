@@ -16,6 +16,7 @@ import {
   Toolbar,
 } from "@mui/material";
 import { styled, useTheme } from "@mui/material/styles";
+import { getTest } from "apis/endpoints/TestEndpoint";
 import { NavigationList } from "constants/LeftNavigationConsts";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
@@ -78,6 +79,7 @@ function LeftNavigation() {
   const [open, setOpen] = React.useState(true);
 
   useEffect(() => {
+    getTest();
     dispatch(setCognitoInfo(user));
   }, [user, dispatch]);
 
