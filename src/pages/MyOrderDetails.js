@@ -8,7 +8,7 @@ import {
   Paper,
   Typography,
 } from "@mui/material";
-import { getItem, getItems } from "apis/endpoints/ItemsEndpoints";
+import { getItem } from "apis/endpoints/ItemsEndpoints";
 import { getListing } from "apis/endpoints/ListingEndpoints";
 import { getOrder } from "apis/endpoints/OrdersEndpoints";
 import { useEffect, useState } from "react";
@@ -21,6 +21,7 @@ function MyOrderDetails() {
   const [listing, setListing] = useState();
   const [items, setItems] = useState([]);
 
+  console.log(order);
   /* Fetch order details */
   useEffect(() => {
     getOrder(orderId).then((order) => {
@@ -30,15 +31,15 @@ function MyOrderDetails() {
 
   /* Fetch listing details */
   useEffect(() => {
-    getListing(order?.listing.id).then((listing) => {
+    getListing(order?.listing._id).then((listing) => {
       setListing(listing);
     });
-  }, [order?.listing.id]);
+  }, [order?.listing._id]);
 
   /* Fetch listing items */
   useEffect(() => {
     listing?.items?.forEach((item) => {
-      getItem(item.id).then((item) => {
+      getItem(item._id).then((item) => {
         setItems((items) => [...items, item]);
       });
     });
@@ -65,7 +66,7 @@ function MyOrderDetails() {
       <AccordionDetails>
         <Grid container spacing={2}>
           {items?.map((item) => (
-            <Grid item container spacing={2} key={item.id}>
+            <Grid item container spacing={2} key={item._id}>
               <Grid item xs={9}>
                 <Typography variant="h5" gutterBottom component="div">
                   {item.title}
@@ -101,17 +102,17 @@ function MyOrderDetails() {
             </Typography>
           </Grid>
           {order?.items?.map((item) => (
-            <Grid item container spacing={2} key={item.id}>
+            <Grid item container spacing={2} key={item._id}>
               <Grid item xs={9}>
                 <Typography variant="body1" gutterBottom component="div">
-                  {`${items.find((i) => i.id === item.id)?.title} x ${
+                  {`${items.find((i) => i._id === item._id)?.title} x ${
                     item.quantity
                   }`}
                 </Typography>
               </Grid>
               <Grid item xs={3} textAlign="end">
                 <Typography variant="body1" gutterBottom component="div">
-                  {items.find((i) => i.id === item.id)?.price * item.quantity}
+                  {items.find((i) => i._id === item._id)?.price * item.quantity}
                 </Typography>
               </Grid>
             </Grid>
@@ -126,7 +127,7 @@ function MyOrderDetails() {
               {order?.items?.reduce((total, item) => {
                 return (
                   total +
-                  items?.find((i) => i.id == item.id)?.price * item.quantity
+                  items?.find((i) => i._id == item._id)?.price * item.quantity
                 );
               }, 0)}
             </Typography>

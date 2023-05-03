@@ -2,34 +2,35 @@ import { Grid, Paper, Typography } from "@mui/material";
 import {
   getMyActiveOrders,
   getMyCompletedOrders,
-  getMyUpcomingOrders,
 } from "apis/endpoints/MyOrdersEndpoints";
 import ItemCard from "components/ItemCard";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 function MyOrders() {
   const navigate = useNavigate();
+  const userInfo = useSelector((state) => state.userInfo.user);
 
   const [myActiveOrders, setMyActiveOrders] = useState([]);
   const [myCompletedOrders, setMyCompletedOrders] = useState([]);
 
   useEffect(() => {
-    getMyActiveOrders().then((response) => {
+    getMyActiveOrders(userInfo._id).then((response) => {
       setMyActiveOrders(response);
     });
-    getMyCompletedOrders().then((response) => {
+    getMyCompletedOrders(userInfo._id).then((response) => {
       setMyCompletedOrders(response);
     });
   }, []);
 
   const renderCards = (orders) => {
     return orders.map((order) => (
-      <Grid item xs={12} sm={6} md={4} lg={3} key={order.id}>
+      <Grid item xs={12} sm={6} md={4} lg={3} key={order._id}>
         <ItemCard
-          listingId={order.listing.id}
+          listingId={order.listing._id}
           onClick={() => {
-            navigate(`/my-orders/${order.id}`);
+            navigate(`/my-orders/${order._id}`);
           }}
         />
       </Grid>

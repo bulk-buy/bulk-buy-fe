@@ -1,45 +1,83 @@
-import { ItemsTesting } from "constants/ItemsTesting";
-import { ListingsTesting } from "constants/ListingsTesting";
+import BulkBuyMS from "apis/BulkBuyMS";
+import ItemMS from "apis/ItemMS";
 
 export const getItems = (listingId) => {
   return new Promise((resolve, reject) => {
-    // BulkBuyMS.get(`/listings/${listingId}`)
-    //   .then((response) => {
-    //     resolve(response.data);
-    //   })
-    //   .catch((error) => {
-    //     console.error(error);
-    //     reject(error);
-    //   });
-    resolve(ItemsTesting.filter((item) => item.listing.id == listingId));
+    ItemMS.get(`/listings/${listingId}`)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+        reject(error);
+      });
   });
 };
 
 export const getItem = (itemId) => {
   return new Promise((resolve, reject) => {
-    // BulkBuyMS.get(`/items/${itemId}`)
-    //   .then((response) => {
-    //     resolve(response.data);
-    //   })
-    //   .catch((error) => {
-    //     console.error(error);
-    //     reject(error);
-    //   });
-    resolve(ItemsTesting.find((item) => item.id == itemId));
+    ItemMS.get(`/items/${itemId}`)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+        reject(error);
+      });
+  });
+};
+
+export const getItemsByListingId = (listingId) => {
+  let encodedListingId = encodeURIComponent(
+    JSON.stringify({ listingId: listingId })
+  );
+  return new Promise((resolve, reject) => {
+    ItemMS.get(`/items/${encodedListingId}`)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+        reject(error);
+      });
+  });
+};
+
+export const patchItem = (itemId, item) => {
+  return new Promise((resolve, reject) => {
+    ItemMS.patch(`/items/${itemId}`, item)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+        reject(error);
+      });
+  });
+};
+
+export const postItem = (item) => {
+  return new Promise((resolve, reject) => {
+    ItemMS.post("/items", item)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+        reject(error);
+      });
   });
 };
 
 export const deleteItem = (itemId) => {
-  console.log("deleteItem" + itemId);
   return new Promise((resolve, reject) => {
-    // BulkBuyMS.delete(`/items/${itemId}`)
-    //   .then((response) => {
-    //     resolve(response.data);
-    //   })
-    //   .catch((error) => {
-    //     console.error(error);
-    //     reject(error);
-    //   });
-    resolve(ItemsTesting.find((item) => item.id == itemId));
+    ItemMS.delete(`/items/${itemId}`)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+        reject(error);
+      });
   });
 };

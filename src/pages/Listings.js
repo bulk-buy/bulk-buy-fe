@@ -14,13 +14,7 @@ function Listings() {
   const [listings, setListings] = useState([]);
   const [recommendedListings, setRecommendedListings] = useState([]);
 
-  useEffect(() => {}, [listings]);
-
   useEffect(() => {
-    getTest().then((response) => {
-      console.log(response);
-    });
-
     getRecommendedListings().then((response) => {
       setRecommendedListings(response);
     });
@@ -55,11 +49,11 @@ function Listings() {
           {listings.length ? (
             <Grid container spacing={2}>
               {recommendedListings?.map((listing) => (
-                <Grid item xs={12} sm={6} md={4} lg={3} key={listing.id}>
+                <Grid item xs={12} sm={6} md={4} lg={3} key={listing._id}>
                   <ItemCard
-                    listingId={listing.id}
+                    listingId={listing._id}
                     onClick={() => {
-                      navigate(`/listings/${listing.id}`);
+                      navigate(`/listings/${listing._id}`);
                     }}
                   />
                 </Grid>
@@ -76,11 +70,11 @@ function Listings() {
           {listings.length ? (
             <Grid container spacing={2}>
               {listings?.map((listing) => (
-                <Grid item xs={12} sm={6} md={4} lg={3} key={listing.id}>
+                <Grid item xs={12} sm={6} md={4} lg={3} key={listing._id}>
                   <ItemCard
-                    listingId={listing.id}
+                    listingId={listing._id}
                     onClick={() => {
-                      navigate(`/listings/${listing.id}`);
+                      navigate(`/listings/${listing._id}`);
                     }}
                   />
                 </Grid>

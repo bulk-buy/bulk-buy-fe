@@ -10,8 +10,12 @@ import {
   linearProgressClasses,
 } from "@mui/material";
 import { getCategory } from "apis/endpoints/CategoriesEndpoints";
-import { getListingSummary } from "apis/endpoints/ListingSummaryEndpoints";
-import { getOrder } from "apis/endpoints/OrdersEndpoints";
+import { getListing } from "apis/endpoints/ListingEndpoints";
+import {
+  getOrder,
+  getOrders,
+  getOrdersByListingId,
+} from "apis/endpoints/OrdersEndpoints";
 import { getUser } from "apis/endpoints/UserEndpoints";
 import { useEffect, useState } from "react";
 
@@ -35,23 +39,25 @@ function ItemCard({ listingId, onClick }) {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    getListingSummary(listingId).then((listing) => {
+    getListing(listingId).then((listing) => {
       setItemSummary(listing);
+    });
+    getOrdersByListingId(listingId).then((orders) => {
+      console.log(orders);
+      setOrders(orders);
     });
   }, [listingId]);
 
+  console.log(orders);
   useEffect(() => {
-    getCategory(itemSummary?.category).then((category) => {
-      setCategory(category);
-    });
-    getUser(itemSummary?.postedBy.id).then((user) => {
-      setPostedBy(user);
-    });
-    itemSummary?.orders?.forEach((order) => {
-      getOrder(order.id).then((order) => {
-        setOrders((orders) => [...orders, order]);
+    if (itemSummary) {
+      getCategory(itemSummary.categoryId).then((category) => {
+        setCategory(category);
       });
-    });
+      getUser(itemSummary.postedBy).then((user) => {
+        setPostedBy(user);
+      });
+    }
   }, [itemSummary]);
 
   const calculatePercentage = (numerator, denominator) => {
@@ -63,8 +69,8 @@ function ItemCard({ listingId, onClick }) {
   const getOrderCount = () => {
     let count = 0;
     orders?.forEach((order) => {
-      order.items.forEach((item) => {
-        count += item.quantity;
+      order?.items?.forEach((item) => {
+        count += item?.quantity;
       });
     });
     return count;
