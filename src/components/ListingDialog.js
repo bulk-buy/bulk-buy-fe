@@ -30,6 +30,7 @@ import { useFormik } from "formik";
 import moment from "moment";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 
 function ListingDialog({
@@ -38,6 +39,7 @@ function ListingDialog({
   listingId,
 }) {
   const userInfo = useSelector((state) => state.userInfo.user);
+  const navigate = useNavigate();
 
   const [categories, setCategories] = useState([]);
   const [v, setV] = useState(0);
@@ -66,7 +68,6 @@ function ListingDialog({
     });
   }, []);
 
-  console.log(listing);
   useEffect(() => {
     if (listingId) {
       getListing(listingId).then((listingResponse) => {
@@ -80,7 +81,6 @@ function ListingDialog({
         setListing((listing) => ({ ...listing, ...listingResponse }));
       });
       getItemsByListingId(listingId).then((items) => {
-        console.log(items);
         items.__v && setV(items.__v);
         setListing((listing) => ({ ...listing, items: items }));
       });
@@ -138,6 +138,7 @@ function ListingDialog({
         setOpenNewListingDialog(false);
       });
     }
+    navigate("/my-listings");
   };
 
   const listingForm = useFormik({
@@ -149,7 +150,6 @@ function ListingDialog({
     enableReinitialize: true,
   });
 
-  console.log(listingForm.values);
   return (
     <Dialog
       open={openNewListingDialog}
