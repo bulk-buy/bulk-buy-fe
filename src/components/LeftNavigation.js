@@ -79,6 +79,7 @@ function LeftNavigation() {
   const [open, setOpen] = React.useState(true);
 
   useEffect(() => {
+    getTest();
     dispatch(setCognitoInfo(user));
     getTest();
   }, [user, dispatch]);
