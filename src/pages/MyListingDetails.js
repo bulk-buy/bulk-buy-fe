@@ -63,7 +63,7 @@ function MyListingDetails() {
       setMyListing(listing);
       setEditable(moment().isBefore(listing?.startDate));
     });
-  }, [listingId, userInfo.email]);
+  }, [listingId, userInfo?.email]);
 
   /* Fetch my listing items */
   useEffect(() => {

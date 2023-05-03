@@ -39,7 +39,7 @@ function Profile() {
       firstName: "",
       lastName: "",
       phone: "+65",
-      email: userInfo.attributes.email,
+      email: userInfo.attributes?.email,
       streetName: "",
       block: "",
       unit: "",
@@ -118,7 +118,7 @@ function Profile() {
               name="email"
               type="email"
               disabled
-              value={profileForm.values.email}
+              value={profileForm.values?.email}
             />
           </Grid>
           <Grid item xs={12}>
