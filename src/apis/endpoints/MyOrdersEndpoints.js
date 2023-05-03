@@ -2,8 +2,9 @@ import OrderMS from "apis/OrderMS";
 import moment from "moment";
 
 export const getMyActiveOrders = (userIdObj) => {
-  let encodedUserId = encodeURIComponent(JSON.stringify({ userId: userIdObj }));
-  console.log(encodedUserId);
+  let encodedUserId = encodeURIComponent(
+    JSON.stringify({ userId: userIdObj, deletedAt: "" })
+  );
   return new Promise((resolve, reject) => {
     OrderMS.get(`/orders/${encodedUserId}`)
       .then((response) => {
@@ -31,7 +32,9 @@ export const getMyActiveOrders = (userIdObj) => {
 };
 
 export const getMyCompletedOrders = (userId) => {
-  let encodedUserId = encodeURIComponent(JSON.stringify({ userId: userId }));
+  let encodedUserId = encodeURIComponent(
+    JSON.stringify({ userId: userId, deletedAt: "" })
+  );
 
   return new Promise((resolve, reject) => {
     OrderMS.get(`/orders/${encodedUserId}}`)

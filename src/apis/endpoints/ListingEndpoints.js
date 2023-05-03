@@ -59,7 +59,6 @@ export const patchListing = (listingId, listing) => {
 };
 
 export const postListing = (listing) => {
-  console.log(listing);
   return new Promise((resolve, reject) => {
     ListingMS.post("/listings", listing)
       .then((response) => {

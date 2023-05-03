@@ -3,7 +3,7 @@ import { ListingsTesting } from "constants/ListingsTesting";
 
 export const getOrder = (orderId) => {
   return new Promise((resolve, reject) => {
-    OrderMS.get("/orders/:orderId")
+    OrderMS.get(`/orders/${orderId}`)
       .then((response) => {
         resolve(response.data);
       })
@@ -11,7 +11,6 @@ export const getOrder = (orderId) => {
         console.error(error);
         reject(error);
       });
-    // resolve(OrdersTesting.find((order) => order._id == orderId));
   });
 };
 

@@ -43,12 +43,10 @@ function ItemCard({ listingId, onClick }) {
       setItemSummary(listing);
     });
     getOrdersByListingId(listingId).then((orders) => {
-      console.log(orders);
       setOrders(orders);
     });
   }, [listingId]);
 
-  console.log(orders);
   useEffect(() => {
     if (itemSummary) {
       getCategory(itemSummary.categoryId).then((category) => {
@@ -61,16 +59,20 @@ function ItemCard({ listingId, onClick }) {
   }, [itemSummary]);
 
   const calculatePercentage = (numerator, denominator) => {
-    return (numerator / denominator) * 100 >= 100
-      ? 100
-      : (numerator / denominator) * 100;
+    if (denominator <= 0) {
+      return 100;
+    } else {
+      return (numerator / denominator) * 100 >= 100
+        ? 100
+        : (numerator / denominator) * 100;
+    }
   };
 
   const getOrderCount = () => {
     let count = 0;
     orders?.forEach((order) => {
-      order?.items?.forEach((item) => {
-        count += item?.quantity;
+      order.items?.forEach((item) => {
+        count += item?.quantity ? item?.quantity : 0;
       });
     });
     return count;

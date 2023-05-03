@@ -16,7 +16,6 @@ import {
   Toolbar,
 } from "@mui/material";
 import { styled, useTheme } from "@mui/material/styles";
-import { getTest } from "apis/endpoints/TestEndpoint";
 import { getUserByEmail } from "apis/endpoints/UserEndpoints";
 import { NavigationList } from "constants/LeftNavigationConsts";
 import React, { useEffect } from "react";

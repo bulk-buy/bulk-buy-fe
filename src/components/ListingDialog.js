@@ -66,7 +66,6 @@ function ListingDialog({
     });
   }, []);
 
-  console.log(listing);
   useEffect(() => {
     if (listingId) {
       getListing(listingId).then((listingResponse) => {
@@ -80,7 +79,6 @@ function ListingDialog({
         setListing((listing) => ({ ...listing, ...listingResponse }));
       });
       getItemsByListingId(listingId).then((items) => {
-        console.log(items);
         items.__v && setV(items.__v);
         setListing((listing) => ({ ...listing, items: items }));
       });
@@ -149,7 +147,6 @@ function ListingDialog({
     enableReinitialize: true,
   });
 
-  console.log(listingForm.values);
   return (
     <Dialog
       open={openNewListingDialog}

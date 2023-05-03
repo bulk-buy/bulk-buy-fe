@@ -58,7 +58,6 @@ function MyListingDetails() {
   /* Fetch my listing details */
   useEffect(() => {
     getMyListing(listingId).then((listing) => {
-      console.log(listing);
       listing.__v && setV(listing.__v);
       setMyListing(listing);
       setEditable(moment().isBefore(listing?.startDate));
@@ -68,7 +67,6 @@ function MyListingDetails() {
   /* Fetch my listing items */
   useEffect(() => {
     getItemsByListingId(listingId).then((items) => {
-      console.log(items);
       items.__v && setV(items.__v);
       items.forEach((item, index) => {
         getItem(item._id).then((item) => {
@@ -86,7 +84,6 @@ function MyListingDetails() {
       orders.__v && setV(orders.__v);
       orders.forEach((order) => {
         getOrder(order._id).then((order) => {
-          console.log(order);
           order.__v && setV(order.__v);
           setMyListingOrders((orders) => [...orders, order]);
         });
@@ -94,7 +91,6 @@ function MyListingDetails() {
     });
   }, [listingId]);
 
-  console.log(v);
   const renderListing = () => (
     <Grid item xs={12}>
       <Typography variant="h1" gutterBottom component="div">
@@ -132,6 +128,7 @@ function MyListingDetails() {
     </Accordion>
   );
 
+  console.log(myListingOrders);
   const renderOrders = () => (
     <Accordion defaultExpanded elevation={0}>
       <AccordionSummary expandIcon={<ExpandMore />}>
@@ -141,24 +138,25 @@ function MyListingDetails() {
       </AccordionSummary>
       <AccordionDetails>
         <Grid container spacing={2}>
-          {myListingOrders?.map((order) => (
-            <Grid item xs={12} key={order._id}>
-              <Typography variant="h5" gutterBottom component="div">
-                <NameContainer userId={order.user._id} />
-              </Typography>
-              {order.items.map((item) => (
-                <Typography
-                  variant="subtitle1"
-                  gutterBottom
-                  component="div"
-                  key={item._id}
-                >
-                  {myListingItems?.find((i) => i._id == item._id)?.title} x{" "}
-                  {item.quantity}
+          {myListingOrders.length ??
+            myListingOrders.map((order) => (
+              <Grid item xs={12} key={order._id}>
+                <Typography variant="h5" gutterBottom component="div">
+                  <NameContainer userId={order.userId} />
                 </Typography>
-              ))}
-            </Grid>
-          ))}
+                {order.item.map((item) => (
+                  <Typography
+                    variant="subtitle1"
+                    gutterBottom
+                    component="div"
+                    key={item._id}
+                  >
+                    {myListingItems?.find((i) => i._id == item._id)?.title} x{" "}
+                    {item.quantity}
+                  </Typography>
+                ))}
+              </Grid>
+            ))}
         </Grid>
       </AccordionDetails>
     </Accordion>

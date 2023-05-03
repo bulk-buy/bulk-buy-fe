@@ -22,13 +22,13 @@ function MyOrders() {
     getMyCompletedOrders(userInfo._id).then((response) => {
       setMyCompletedOrders(response);
     });
-  }, []);
+  }, [userInfo._id]);
 
   const renderCards = (orders) => {
     return orders.map((order) => (
       <Grid item xs={12} sm={6} md={4} lg={3} key={order._id}>
         <ItemCard
-          listingId={order.listing._id}
+          listingId={order.listingId}
           onClick={() => {
             navigate(`/my-orders/${order._id}`);
           }}
