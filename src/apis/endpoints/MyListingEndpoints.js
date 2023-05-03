@@ -7,7 +7,7 @@ export const getMyActiveListings = (userId) => {
   );
 
   return new Promise((resolve, reject) => {
-    ListingMS.get(`/listings/${encodedUserId}}`)
+    ListingMS.get(`/listings/${encodedUserId}`)
       .then((response) => {
         let listings = response.data;
         listings.forEach((listing, index) => {
@@ -37,7 +37,6 @@ export const getMyUpcomingListings = (userId) => {
     ListingMS.get(`/listings/${encodedUserId}`)
       .then((response) => {
         let listings = response.data;
-        console.log(listings);
         listings.forEach((listing, index) => {
           if (!moment(listing.startDate).isAfter(moment(new Date()))) {
             listings.splice(index, 1);

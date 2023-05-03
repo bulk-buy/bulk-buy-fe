@@ -21,7 +21,6 @@ function MyOrderDetails() {
   const [listing, setListing] = useState();
   const [items, setItems] = useState([]);
 
-  console.log(order);
   /* Fetch order details */
   useEffect(() => {
     getOrder(orderId).then((order) => {
@@ -31,19 +30,26 @@ function MyOrderDetails() {
 
   /* Fetch listing details */
   useEffect(() => {
-    getListing(order?.listing._id).then((listing) => {
-      setListing(listing);
-    });
-  }, [order?.listing._id]);
+    order?.listingId &&
+      getListing(order?.listingId).then((listing) => {
+        setListing(listing);
+      });
+  }, [order?.listingId]);
 
   /* Fetch listing items */
   useEffect(() => {
-    listing?.items?.forEach((item) => {
-      getItem(item._id).then((item) => {
-        setItems((items) => [...items, item]);
+    order?.item?.forEach((item) => {
+      getItem(item.itemId).then((item) => {
+        setItems((prevItems) => {
+          let newItems = [...prevItems];
+          let index = newItems.findIndex((i) => i._id === item._id);
+          if (index === -1) newItems.push(item);
+          else newItems[index] = { ...newItems[index], ...item };
+          return newItems;
+        });
       });
     });
-  }, [listing?.items]);
+  }, [order?.item]);
 
   const renderListing = () => (
     <Grid item xs={12}>
@@ -93,7 +99,7 @@ function MyOrderDetails() {
         <Grid container spacing={2}>
           <Grid item xs={9}>
             <Typography variant="h5" gutterBottom component="div">
-              items
+              Items
             </Typography>
           </Grid>
           <Grid item xs={3} textAlign="end">
@@ -101,18 +107,19 @@ function MyOrderDetails() {
               Price (SGD)
             </Typography>
           </Grid>
-          {order?.items?.map((item) => (
-            <Grid item container spacing={2} key={item._id}>
+          {order?.item?.map((item) => (
+            <Grid item container spacing={2} key={item.itemId}>
               <Grid item xs={9}>
                 <Typography variant="body1" gutterBottom component="div">
-                  {`${items.find((i) => i._id === item._id)?.title} x ${
+                  {`${items.find((i) => i._id === item.itemId)?.title} x ${
                     item.quantity
                   }`}
                 </Typography>
               </Grid>
               <Grid item xs={3} textAlign="end">
                 <Typography variant="body1" gutterBottom component="div">
-                  {items.find((i) => i._id === item._id)?.price * item.quantity}
+                  {items.find((i) => i._id === item.itemId)?.price *
+                    item.quantity}
                 </Typography>
               </Grid>
             </Grid>
@@ -124,10 +131,11 @@ function MyOrderDetails() {
           </Grid>
           <Grid item xs={3} textAlign="end">
             <Typography variant="h5" gutterBottom component="div">
-              {order?.items?.reduce((total, item) => {
+              {order?.item?.reduce((total, item) => {
                 return (
                   total +
-                  items?.find((i) => i._id == item._id)?.price * item.quantity
+                  items?.find((i) => i._id === item.itemId)?.price *
+                    item.quantity
                 );
               }, 0)}
             </Typography>

@@ -7,6 +7,11 @@ import {
   Box,
   Button,
   ButtonGroup,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Grid,
   Paper,
   Typography,
@@ -29,10 +34,10 @@ function ListingDetails() {
   const [listing, setListing] = useState();
   const [items, setItems] = useState([]);
   const [orders, setOrders] = useState([]);
+  const [openConfirmOrder, setOpenConfirmOrder] = useState(false);
 
   const [v, setV] = useState(0);
 
-  console.log(items);
   useEffect(() => {
     /* Fetch listing details */
     getListing(listingId).then((listing) => {
@@ -44,12 +49,6 @@ function ListingDetails() {
     getItemsByListingId(listingId).then((items) => {
       items.__v && setV(items.__v);
       setItems(items);
-    });
-
-    /* Fetch orders */
-    getOrdersByListingId(listingId).then((orders) => {
-      orders.__v && setV(orders.__v);
-      setOrders(orders);
     });
   }, [listingId]);
 
@@ -65,13 +64,13 @@ function ListingDetails() {
   );
 
   const handleClickAddItem = (itemId) => {
-    if (orders.find((order) => order._id == itemId) == undefined) {
-      setOrders((orders) => [...orders, { _id: itemId, quantity: 1 }]);
+    if (orders.find((order) => order.itemId == itemId) == undefined) {
+      setOrders((orders) => [...orders, { itemId: itemId, quantity: 1 }]);
     } else {
       setOrders((orders) => {
         let newOrders = [...orders];
         newOrders.forEach((order, index) => {
-          if (order._id == itemId) {
+          if (order.itemId == itemId) {
             newOrders[index].quantity++;
           }
         });
@@ -81,13 +80,13 @@ function ListingDetails() {
   };
 
   const handleClickMinusItem = (itemId) => {
-    if (orders.find((order) => order._id == itemId) == undefined) {
+    if (orders.find((order) => order.itemId == itemId) == undefined) {
       return;
-    } else if (orders.find((order) => order._id == itemId).quantity == 1) {
+    } else if (orders.find((order) => order.itemId == itemId).quantity == 1) {
       setOrders((orders) => {
         let newOrders = [...orders];
         newOrders.forEach((order, index) => {
-          if (order._id == itemId) {
+          if (order.itemId == itemId) {
             newOrders.splice(index, 1);
           }
         });
@@ -97,7 +96,7 @@ function ListingDetails() {
       setOrders((orders) => {
         let newOrders = [...orders];
         newOrders.forEach((order, index) => {
-          if (order._id == itemId) {
+          if (order.itemId == itemId) {
             newOrders[index].quantity--;
           }
         });
@@ -107,7 +106,7 @@ function ListingDetails() {
   };
 
   const getOrderCount = (item) => {
-    let order = orders.find((order) => order._id == item._id);
+    let order = orders.find((order) => order.itemId == item._id);
     return order?.quantity || 0;
   };
 
@@ -130,22 +129,29 @@ function ListingDetails() {
                   {item.description}
                 </Typography>
               </Grid>
-              <Grid item xs={3} textAlign="end">
-                <ButtonGroup>
-                  <Button
-                    variant="outlined"
-                    onClick={() => handleClickMinusItem(item._id)}
-                  >
-                    -
-                  </Button>
-                  <Button variant="outlined">{getOrderCount(item)}</Button>
-                  <Button
-                    variant="outlined"
-                    onClick={() => handleClickAddItem(item._id)}
-                  >
-                    +
-                  </Button>
-                </ButtonGroup>
+              <Grid container item xs={3} textAlign="end" spacing={2}>
+                <Grid item xs={4} textAlign="end">
+                  <Typography variant="body" gutterBottom component="div">
+                    {`SGD ${item.price}`}
+                  </Typography>
+                </Grid>
+                <Grid item xs={8}>
+                  <ButtonGroup>
+                    <Button
+                      variant="outlined"
+                      onClick={() => handleClickMinusItem(item._id)}
+                    >
+                      -
+                    </Button>
+                    <Button variant="outlined">{getOrderCount(item)}</Button>
+                    <Button
+                      variant="outlined"
+                      onClick={() => handleClickAddItem(item._id)}
+                    >
+                      +
+                    </Button>
+                  </ButtonGroup>
+                </Grid>
               </Grid>
             </Grid>
           ))}
@@ -155,12 +161,21 @@ function ListingDetails() {
   );
 
   const handleSubmitOrders = () => {
-    console.log(orders);
+    setOpenConfirmOrder(false);
+    let orderObj = {
+      listingId: listingId,
+      userId: userInfo._id,
+      item: [],
+    };
     orders.forEach((order) => {
       order = { ...order, listingId: listingId, userId: userInfo._id, __v: v };
-      postOrder(order).then((order) => {
-        order.__v && setV(order.__v);
+      orderObj.item.push({
+        itemId: order.itemId,
+        quantity: order.quantity,
       });
+    });
+    postOrder(orderObj).then((order) => {
+      order.__v && setV(order.__v);
     });
     navigate("/my-orders");
   };
@@ -176,7 +191,7 @@ function ListingDetails() {
         <Grid container spacing={2}>
           <Grid item xs={9}>
             <Typography variant="h5" gutterBottom component="div">
-              items
+              Items
             </Typography>
           </Grid>
           <Grid item xs={3} textAlign="end">
@@ -185,17 +200,17 @@ function ListingDetails() {
             </Typography>
           </Grid>
           {orders?.map((order) => (
-            <Grid item container spacing={2} key={order._id}>
+            <Grid item container spacing={2} key={order.itemId}>
               <Grid item xs={9}>
                 <Typography variant="body1" gutterBottom component="div">
-                  {`${items?.find((item) => item._id == order._id)?.title} x ${
-                    order.quantity
-                  }`}
+                  {`${
+                    items?.find((item) => item._id == order.itemId)?.title
+                  } x ${order.quantity}`}
                 </Typography>
               </Grid>
               <Grid item xs={3} textAlign="end">
                 <Typography variant="body1" gutterBottom component="div">
-                  {items?.find((item) => item._id == order._id)?.price *
+                  {items?.find((item) => item._id == order.itemId)?.price *
                     order.quantity}
                 </Typography>
               </Grid>
@@ -211,7 +226,7 @@ function ListingDetails() {
               {orders?.reduce((total, order) => {
                 return (
                   total +
-                  items?.find((item) => item._id == order._id)?.price *
+                  items?.find((item) => item._id == order.itemId)?.price *
                     order.quantity
                 );
               }, 0)}
@@ -225,7 +240,7 @@ function ListingDetails() {
           color="secondary"
           fullWidth
           disabled={!orders.length}
-          onClick={() => handleSubmitOrders()}
+          onClick={() => setOpenConfirmOrder(true)}
         >
           Confirm Orders
         </Button>
@@ -235,6 +250,35 @@ function ListingDetails() {
 
   return (
     <Paper elevation={0}>
+      <Dialog
+        open={openConfirmOrder}
+        onClose={() => setOpenConfirmOrder(false)}
+        fullWidth
+      >
+        <DialogTitle>Confirm Order</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to confirm this order?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => setOpenConfirmOrder(false)}
+          >
+            Cancel
+          </Button>
+          <Button
+            variant="contained"
+            color="success"
+            onClick={() => handleSubmitOrders()}
+          >
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
+
       <Box
         component="img"
         sx={{

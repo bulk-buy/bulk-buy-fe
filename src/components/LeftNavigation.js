@@ -16,10 +16,9 @@ import {
   Toolbar,
 } from "@mui/material";
 import { styled, useTheme } from "@mui/material/styles";
-import { getTest } from "apis/endpoints/TestEndpoint";
-import { getUserByEmail } from "apis/endpoints/UserEndpoints";
+import { getUserByEmail, postUser } from "apis/endpoints/UserEndpoints";
 import { NavigationList } from "constants/LeftNavigationConsts";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Outlet, useNavigate } from "react-router-dom";
 import { setCognitoInfo, setUserInfo } from "store/userInfoSlice";
@@ -77,14 +76,45 @@ function LeftNavigation() {
   const navigate = useNavigate();
   const theme = useTheme();
 
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = useState(true);
+  const [userInfoState, setUserInfoState] = useState();
 
   useEffect(() => {
     dispatch(setCognitoInfo(user));
-    getUserByEmail(user?.attributes?.email).then((user) => {
-      dispatch(setUserInfo(user[0]));
-    });
   }, [user, dispatch]);
+
+  useEffect(() => {
+    getUserByEmail(user?.attributes?.email).then((userObj) => {
+      if (userObj.length > 0) {
+        setUserInfoState(userObj[0]);
+      } else {
+        setUserInfoState({
+          email: user?.attributes?.email,
+          firstName: "",
+          lastName: "",
+          phone: "+65",
+          streetName: "",
+          block: "",
+          unit: "",
+          postalCode: "",
+        });
+      }
+    });
+  }, [user?.attributes?.email]);
+
+  useEffect(() => {
+    if (userInfoState !== undefined && userInfoState._id === undefined) {
+      postUser(userInfoState).then((response) => {
+        setUserInfoState(response);
+      });
+    }
+  }, [userInfoState]);
+
+  useEffect(() => {
+    if (userInfoState !== undefined && userInfoState._id !== undefined) {
+      dispatch(setUserInfo(userInfoState));
+    }
+  }, [userInfoState, dispatch]);
 
   const handleDrawerOpen = () => {
     setOpen(true);

@@ -17,6 +17,7 @@ import {
   getOrdersByListingId,
 } from "apis/endpoints/OrdersEndpoints";
 import { getUser } from "apis/endpoints/UserEndpoints";
+import moment from "moment";
 import { useEffect, useState } from "react";
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
@@ -43,12 +44,10 @@ function ItemCard({ listingId, onClick }) {
       setItemSummary(listing);
     });
     getOrdersByListingId(listingId).then((orders) => {
-      console.log(orders);
       setOrders(orders);
     });
   }, [listingId]);
 
-  console.log(orders);
   useEffect(() => {
     if (itemSummary) {
       getCategory(itemSummary.categoryId).then((category) => {
@@ -61,16 +60,20 @@ function ItemCard({ listingId, onClick }) {
   }, [itemSummary]);
 
   const calculatePercentage = (numerator, denominator) => {
-    return (numerator / denominator) * 100 >= 100
-      ? 100
-      : (numerator / denominator) * 100;
+    if (denominator <= 0) {
+      return 100;
+    } else {
+      return (numerator / denominator) * 100 >= 100
+        ? 100
+        : (numerator / denominator) * 100;
+    }
   };
 
   const getOrderCount = () => {
     let count = 0;
     orders?.forEach((order) => {
-      order?.items?.forEach((item) => {
-        count += item?.quantity;
+      order.items?.forEach((item) => {
+        count += item?.quantity ? item?.quantity : 0;
       });
     });
     return count;
@@ -91,6 +94,14 @@ function ItemCard({ listingId, onClick }) {
           </Typography>
           <Typography variant="body2" color="text.secondary">
             {itemSummary?.description}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {`Start date: ${moment(itemSummary?.startDate).format(
+              "DD/MM/YYYY"
+            )}`}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {`End date: ${moment(itemSummary?.endDate).format("DD/MM/YYYY")}`}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             {`Posted by ${postedBy?.firstName} ${postedBy?.lastName}`}
