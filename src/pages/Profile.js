@@ -1,9 +1,10 @@
 import { Save } from "@mui/icons-material";
 import { Button, Grid, Paper, TextField } from "@mui/material";
+import { patchUser } from "apis/endpoints/UserEndpoints";
 import { useFormik } from "formik";
 import { MuiTelInput } from "mui-tel-input";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { getUserInfo } from "store/userInfoSlice";
 import * as Yup from "yup";
 
 const profileValidation = Yup.object().shape({
@@ -34,21 +35,31 @@ const profileValidation = Yup.object().shape({
 function Profile() {
   const userInfo = useSelector((state) => state.userInfo.user);
 
+  const [v, setV] = useState(0);
+
+  useEffect(() => {
+    setV(userInfo.__v);
+  }, [userInfo]);
+
   const profileForm = useFormik({
     initialValues: {
-      firstName: "",
-      lastName: "",
-      phone: "+65",
-      email: userInfo.attributes?.email,
-      streetName: "",
-      block: "",
-      unit: "",
-      postalCode: "",
+      firstName: userInfo.firstName || "",
+      lastName: userInfo.lastName || "",
+      phone: userInfo.phone || "+65",
+      email: userInfo.email || "",
+      streetName: userInfo.streetName || "",
+      block: userInfo.block || "",
+      unit: userInfo.unit || "",
+      postalCode: userInfo.postalCode || "",
     },
     onSubmit: (values) => {
-      console.log(values);
+      values.__v = v;
+      patchUser(userInfo._id, values).then((user) => {
+        user.__v && setV(user.__v);
+      });
     },
     validationSchema: profileValidation,
+    enableReinitialize: true,
   });
 
   return (

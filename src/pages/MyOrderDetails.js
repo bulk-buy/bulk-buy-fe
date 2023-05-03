@@ -30,9 +30,10 @@ function MyOrderDetails() {
 
   /* Fetch listing details */
   useEffect(() => {
-    getListing(order?.listingId).then((listing) => {
-      setListing(listing);
-    });
+    order?.listingId &&
+      getListing(order?.listingId).then((listing) => {
+        setListing(listing);
+      });
   }, [order?.listingId]);
 
   /* Fetch listing items */

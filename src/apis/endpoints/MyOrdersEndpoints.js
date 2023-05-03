@@ -10,11 +10,6 @@ export const getMyActiveOrders = (userIdObj) => {
       .then((response) => {
         let orders = response.data;
         orders.forEach((order, index) => {
-          if (order.userId != 1) {
-            orders.splice(index, 1);
-          }
-        });
-        orders.forEach((order, index) => {
           if (
             moment(order.startDate).isAfter(moment(new Date())) ||
             moment(order.endDate).isBefore(moment(new Date()))
@@ -40,11 +35,6 @@ export const getMyCompletedOrders = (userId) => {
     OrderMS.get(`/orders/${encodedUserId}}`)
       .then((response) => {
         let orders = response.data;
-        orders.forEach((order, index) => {
-          if (order.userId != 1) {
-            orders.splice(index, 1);
-          }
-        });
         orders.forEach((order, index) => {
           if (!moment(order.endDate).isBefore(moment(new Date()))) {
             orders.splice(index, 1);

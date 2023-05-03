@@ -17,13 +17,12 @@ import {
   deleteMyListing,
   getMyListing,
 } from "apis/endpoints/MyListingEndpoints";
-import { getOrder, getOrdersByListingId } from "apis/endpoints/OrdersEndpoints";
+import { getOrdersByListingId } from "apis/endpoints/OrdersEndpoints";
 import { getUser } from "apis/endpoints/UserEndpoints";
 import ListingDialog from "components/ListingDialog";
 import moment from "moment";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { useParams, useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 
 function NameContainer({ userId }) {
   const [user, setUser] = useState();
@@ -44,7 +43,6 @@ function NameContainer({ userId }) {
 function MyListingDetails() {
   const { listingId } = useParams();
   const navigate = useNavigate();
-  const userInfo = useSelector((state) => state.userInfo.user);
 
   const [myListing, setMyListing] = useState();
   const [myListingItems, setMyListingItems] = useState([]);
@@ -55,17 +53,15 @@ function MyListingDetails() {
 
   const [v, setV] = useState(0);
 
-  /* Fetch my listing details */
   useEffect(() => {
+    /* Fetch my listing details */
     getMyListing(listingId).then((listing) => {
       listing.__v && setV(listing.__v);
       setMyListing(listing);
       setEditable(moment().isBefore(listing?.startDate));
     });
-  }, [listingId, userInfo?.email]);
 
-  /* Fetch my listing items */
-  useEffect(() => {
+    /* Fetch my listing items */
     getItemsByListingId(listingId).then((items) => {
       items.__v && setV(items.__v);
       items.forEach((item, index) => {
@@ -76,18 +72,10 @@ function MyListingDetails() {
       });
       setMyListingItems(items);
     });
-  }, [listingId]);
 
-  /* Fetch my listing orders */
-  useEffect(() => {
+    /* Fetch my listing orders */
     getOrdersByListingId(listingId).then((orders) => {
-      orders.__v && setV(orders.__v);
-      orders.forEach((order) => {
-        getOrder(order._id).then((order) => {
-          order.__v && setV(order.__v);
-          setMyListingOrders((orders) => [...orders, order]);
-        });
-      });
+      setMyListingOrders(orders);
     });
   }, [listingId]);
 
@@ -128,7 +116,6 @@ function MyListingDetails() {
     </Accordion>
   );
 
-  console.log(myListingOrders);
   const renderOrders = () => (
     <Accordion defaultExpanded elevation={0}>
       <AccordionSummary expandIcon={<ExpandMore />}>
@@ -138,25 +125,62 @@ function MyListingDetails() {
       </AccordionSummary>
       <AccordionDetails>
         <Grid container spacing={2}>
-          {myListingOrders.length ??
-            myListingOrders.map((order) => (
-              <Grid item xs={12} key={order._id}>
+          {myListingOrders.map((order) => (
+            <Grid container item xs={12} key={order._id}>
+              <Grid item xs={12}>
                 <Typography variant="h5" gutterBottom component="div">
                   <NameContainer userId={order.userId} />
                 </Typography>
-                {order.item.map((item) => (
-                  <Typography
-                    variant="subtitle1"
-                    gutterBottom
-                    component="div"
-                    key={item._id}
-                  >
-                    {myListingItems?.find((i) => i._id == item._id)?.title} x{" "}
-                    {item.quantity}
-                  </Typography>
-                ))}
               </Grid>
-            ))}
+              {order.item.map((orderItem) => (
+                <Grid container item xs={12} key={orderItem._id}>
+                  <Grid item xs={9}>
+                    <Typography
+                      variant="subtitle1"
+                      gutterBottom
+                      component="div"
+                    >
+                      {
+                        myListingItems?.find((i) => i._id == orderItem.itemId)
+                          ?.title
+                      }{" "}
+                      x {orderItem.quantity}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={3} textAlign="end">
+                    <Typography
+                      variant="subtitle1"
+                      gutterBottom
+                      component="div"
+                    >
+                      {`SGD ${
+                        myListingItems?.find((i) => i._id == orderItem.itemId)
+                          ?.price * orderItem.quantity
+                      }`}
+                    </Typography>
+                  </Grid>
+                </Grid>
+              ))}
+              <Grid item xs={12}>
+                <Typography
+                  variant="h5"
+                  gutterBottom
+                  component="div"
+                  textAlign="end"
+                >
+                  Total: SGD{" "}
+                  {order?.item?.reduce((total, item) => {
+                    return (
+                      total +
+                      myListingItems?.find((i) => i._id === item.itemId)
+                        ?.price *
+                        item.quantity
+                    );
+                  }, 0)}
+                </Typography>
+              </Grid>
+            </Grid>
+          ))}
         </Grid>
       </AccordionDetails>
     </Accordion>

@@ -17,6 +17,7 @@ import {
   getOrdersByListingId,
 } from "apis/endpoints/OrdersEndpoints";
 import { getUser } from "apis/endpoints/UserEndpoints";
+import moment from "moment";
 import { useEffect, useState } from "react";
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
@@ -93,6 +94,14 @@ function ItemCard({ listingId, onClick }) {
           </Typography>
           <Typography variant="body2" color="text.secondary">
             {itemSummary?.description}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {`Start date: ${moment(itemSummary?.startDate).format(
+              "DD/MM/YYYY"
+            )}`}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {`End date: ${moment(itemSummary?.endDate).format("DD/MM/YYYY")}`}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             {`Posted by ${postedBy?.firstName} ${postedBy?.lastName}`}

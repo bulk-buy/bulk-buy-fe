@@ -31,7 +31,7 @@ export const getOrders = (listingId) => {
 
 export const getOrdersByListingId = (listingId) => {
   let encodedListingId = encodeURIComponent(
-    JSON.stringify({ listingId: listingId })
+    JSON.stringify({ listingId: listingId, deletedAt: "" })
   );
 
   return new Promise((resolve, reject) => {
