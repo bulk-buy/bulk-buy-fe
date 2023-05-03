@@ -6,7 +6,7 @@ function ItemsContainer({ itemIdList }) {
   return (
     <Grid container spacing={2}>
       {itemIdList.map((itemId) => (
-        <Grid item xs={12} key={itemId.id}>
+        <Grid item xs={12} key={itemId._id}>
           <Item item={itemId} />
         </Grid>
       ))}

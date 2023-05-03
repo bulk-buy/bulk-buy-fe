@@ -17,11 +17,12 @@ import {
 } from "@mui/material";
 import { styled, useTheme } from "@mui/material/styles";
 import { getTest } from "apis/endpoints/TestEndpoint";
+import { getUserByEmail } from "apis/endpoints/UserEndpoints";
 import { NavigationList } from "constants/LeftNavigationConsts";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Outlet, useNavigate } from "react-router-dom";
-import { setCognitoInfo } from "store/userInfoSlice";
+import { setCognitoInfo, setUserInfo } from "store/userInfoSlice";
 
 const drawerWidth = 240;
 
@@ -79,8 +80,10 @@ function LeftNavigation() {
   const [open, setOpen] = React.useState(true);
 
   useEffect(() => {
-    getTest();
     dispatch(setCognitoInfo(user));
+    getUserByEmail(user.attributes.email).then((user) => {
+      dispatch(setUserInfo(user[0]));
+    });
   }, [user, dispatch]);
 
   const handleDrawerOpen = () => {

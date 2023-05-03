@@ -7,40 +7,51 @@ import {
   Box,
   Button,
   ButtonGroup,
-  Divider,
   Grid,
   Paper,
   Typography,
 } from "@mui/material";
-import { getItem } from "apis/endpoints/ItemsEndpoints";
+import { getItemsByListingId } from "apis/endpoints/ItemsEndpoints";
 import { getListing } from "apis/endpoints/ListingEndpoints";
+import {
+  getOrdersByListingId,
+  postOrder,
+} from "apis/endpoints/OrdersEndpoints";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useSelector } from "react-redux";
+import { useParams, useNavigate } from "react-router";
 
 function ListingDetails() {
   const { listingId } = useParams();
+  const navigate = useNavigate();
+  const userInfo = useSelector((state) => state.userInfo.user);
 
   const [listing, setListing] = useState();
   const [items, setItems] = useState([]);
   const [orders, setOrders] = useState([]);
 
-  /* Fetch listing details */
+  const [v, setV] = useState(0);
+
+  console.log(items);
   useEffect(() => {
     /* Fetch listing details */
     getListing(listingId).then((listing) => {
+      listing.__v && setV(listing.__v);
       setListing(listing);
     });
-  }, [listingId]);
 
-  /* Fetch item details */
-  useEffect(() => {
-    listing?.items?.forEach((item) => {
-      getItem(item.id).then((item) => {
-        setItems((items) => [...items, item]);
-        // setOrders((order) => [...order, { id: item.id, quantity: 0 }]);
-      });
+    /* Fetch items */
+    getItemsByListingId(listingId).then((items) => {
+      items.__v && setV(items.__v);
+      setItems(items);
     });
-  }, [listing?.items]);
+
+    /* Fetch orders */
+    getOrdersByListingId(listingId).then((orders) => {
+      orders.__v && setV(orders.__v);
+      setOrders(orders);
+    });
+  }, [listingId]);
 
   const renderListing = () => (
     <Grid item xs={12}>
@@ -54,13 +65,13 @@ function ListingDetails() {
   );
 
   const handleClickAddItem = (itemId) => {
-    if (orders.find((order) => order.id == itemId) == undefined) {
-      setOrders((orders) => [...orders, { id: itemId, quantity: 1 }]);
+    if (orders.find((order) => order._id == itemId) == undefined) {
+      setOrders((orders) => [...orders, { _id: itemId, quantity: 1 }]);
     } else {
       setOrders((orders) => {
         let newOrders = [...orders];
         newOrders.forEach((order, index) => {
-          if (order.id == itemId) {
+          if (order._id == itemId) {
             newOrders[index].quantity++;
           }
         });
@@ -70,13 +81,13 @@ function ListingDetails() {
   };
 
   const handleClickMinusItem = (itemId) => {
-    if (orders.find((order) => order.id == itemId) == undefined) {
+    if (orders.find((order) => order._id == itemId) == undefined) {
       return;
-    } else if (orders.find((order) => order.id == itemId).quantity == 1) {
+    } else if (orders.find((order) => order._id == itemId).quantity == 1) {
       setOrders((orders) => {
         let newOrders = [...orders];
         newOrders.forEach((order, index) => {
-          if (order.id == itemId) {
+          if (order._id == itemId) {
             newOrders.splice(index, 1);
           }
         });
@@ -86,7 +97,7 @@ function ListingDetails() {
       setOrders((orders) => {
         let newOrders = [...orders];
         newOrders.forEach((order, index) => {
-          if (order.id == itemId) {
+          if (order._id == itemId) {
             newOrders[index].quantity--;
           }
         });
@@ -96,7 +107,7 @@ function ListingDetails() {
   };
 
   const getOrderCount = (item) => {
-    let order = orders.find((order) => order.id == item.id);
+    let order = orders.find((order) => order._id == item._id);
     return order?.quantity || 0;
   };
 
@@ -110,7 +121,7 @@ function ListingDetails() {
       <AccordionDetails>
         <Grid container spacing={2}>
           {items?.map((item) => (
-            <Grid item container spacing={2} key={item.id}>
+            <Grid item container spacing={2} key={item._id}>
               <Grid item xs={9}>
                 <Typography variant="h5" gutterBottom component="div">
                   {item.title}
@@ -123,14 +134,14 @@ function ListingDetails() {
                 <ButtonGroup>
                   <Button
                     variant="outlined"
-                    onClick={() => handleClickMinusItem(item.id)}
+                    onClick={() => handleClickMinusItem(item._id)}
                   >
                     -
                   </Button>
                   <Button variant="outlined">{getOrderCount(item)}</Button>
                   <Button
                     variant="outlined"
-                    onClick={() => handleClickAddItem(item.id)}
+                    onClick={() => handleClickAddItem(item._id)}
                   >
                     +
                   </Button>
@@ -145,6 +156,13 @@ function ListingDetails() {
 
   const handleSubmitOrders = () => {
     console.log(orders);
+    orders.forEach((order) => {
+      order = { ...order, listingId: listingId, userId: userInfo._id, __v: v };
+      postOrder(order).then((order) => {
+        order.__v && setV(order.__v);
+      });
+    });
+    navigate("/my-orders");
   };
 
   const renderOrders = () => (
@@ -167,17 +185,17 @@ function ListingDetails() {
             </Typography>
           </Grid>
           {orders?.map((order) => (
-            <Grid item container spacing={2} key={order.id}>
+            <Grid item container spacing={2} key={order._id}>
               <Grid item xs={9}>
                 <Typography variant="body1" gutterBottom component="div">
-                  {`${items?.find((item) => item.id == order.id)?.title} x ${
+                  {`${items?.find((item) => item._id == order._id)?.title} x ${
                     order.quantity
                   }`}
                 </Typography>
               </Grid>
               <Grid item xs={3} textAlign="end">
                 <Typography variant="body1" gutterBottom component="div">
-                  {items?.find((item) => item.id == order.id)?.price *
+                  {items?.find((item) => item._id == order._id)?.price *
                     order.quantity}
                 </Typography>
               </Grid>
@@ -193,7 +211,7 @@ function ListingDetails() {
               {orders?.reduce((total, order) => {
                 return (
                   total +
-                  items?.find((item) => item.id == order.id)?.price *
+                  items?.find((item) => item._id == order._id)?.price *
                     order.quantity
                 );
               }, 0)}
@@ -222,7 +240,6 @@ function ListingDetails() {
         sx={{
           height: 200,
         }}
-        alt={`${listing?.category.name}`}
         src="/images/trolley512.png"
       />
       <Grid container spacing={2}>
