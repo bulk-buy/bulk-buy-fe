@@ -81,7 +81,7 @@ function LeftNavigation() {
 
   useEffect(() => {
     dispatch(setCognitoInfo(user));
-    getUserByEmail(user?.attributes.email).then((user) => {
+    getUserByEmail(user?.attributes?.email).then((user) => {
       dispatch(setUserInfo(user[0]));
     });
   }, [user, dispatch]);
