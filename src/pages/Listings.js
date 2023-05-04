@@ -41,7 +41,7 @@ function Listings() {
             src="/images/bulk-buy-ad.gif"
           />
         </Grid>
-        {/* <Grid item xs={12}>
+        <Grid item xs={12}>
           <Typography variant="h3">Recommended listings</Typography>
         </Grid>
         <Grid item xs={12}>
@@ -61,7 +61,7 @@ function Listings() {
           ) : (
             <Typography variant="subtitle1">No listings available</Typography>
           )}
-        </Grid> */}
+        </Grid>
         <Grid item xs={12}>
           <Typography variant="h3">Available listings</Typography>
         </Grid>

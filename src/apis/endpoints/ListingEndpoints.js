@@ -32,11 +32,28 @@ export const getListing = (listingId) => {
   });
 };
 
+const returnRandom5Listings = (listings) => {
+  let random5Listings = [];
+  let random5ListingIds = [];
+  if (listings.length <= 5) {
+    return listings;
+  }
+
+  while (random5Listings.length < 5) {
+    let randomIndex = Math.floor(Math.random() * listings.length);
+    if (!random5ListingIds.includes(listings[randomIndex]._id)) {
+      random5ListingIds.push(listings[randomIndex]._id);
+      random5Listings.push(listings[randomIndex]);
+    }
+  }
+  return random5Listings;
+};
+
 export const getRecommendedListings = () => {
   return new Promise((resolve, reject) => {
     ListingMS.get("/listings")
       .then((response) => {
-        resolve(response.data);
+        resolve(returnRandom5Listings(response.data));
       })
       .catch((error) => {
         console.error(error);
